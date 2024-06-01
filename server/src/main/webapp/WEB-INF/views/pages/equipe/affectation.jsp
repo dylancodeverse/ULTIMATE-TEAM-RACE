@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HUHU</title>
+    <title>ULTIMATE RACE</title>
 
     <%@ include file="../../templates/headerLinkForm.html" %>
 
