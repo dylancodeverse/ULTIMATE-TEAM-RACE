@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import scaffold.framework.demo.config.springAuth.annotations.Auth;
+import scaffold.framework.demo.config.springAuth.rules.RulesConf;
 import scaffold.framework.demo.models.AppUser;
 import scaffold.framework.demo.models.course.CompletResultatEtape;
 import scaffold.framework.demo.models.course.ResultatEtape;
@@ -59,6 +61,7 @@ public class CTAdmin {
     }
 
     @GetMapping("/affectation")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
     public String getPageAffectationTemps(Model model) throws Exception {
         Connection connection = dataSource.getConnection();
         try {
@@ -74,6 +77,7 @@ public class CTAdmin {
     }
 
     @PostMapping("/affectation")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
     public String affecter(String ID, String depart, String arrivee) throws Exception {
         Connection connection = dataSource.getConnection();
         try {
