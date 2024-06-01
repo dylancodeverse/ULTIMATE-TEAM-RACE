@@ -1,4 +1,4 @@
-drop VIEW COMPLETResultatEtape ; 
+drop VIEW COMPLETResultatEtape cascade; 
 CREATE VIEW COMPLETResultatEtape AS
 SELECT ResultatEtape.ID , ResultatEtape.Depart,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
@@ -12,7 +12,7 @@ SELECT ResultatEtape.ID , ResultatEtape.Depart,
 
 
 
-DROP view classementCR;
+DROP view classementCR cascade;
 CREATE view classementCR AS
 SELECT  RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) AS rang,
         COMPLETResultatEtape.* , 
@@ -28,7 +28,7 @@ SELECT  RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLET
         COMPLETResultatEtape.Depart is not null
         ORDER BY COMPLETResultatEtape.Arrivee;
 
-drop view classementEQ1 ;
+drop view classementEQ1 cascade;
 CREATE VIEW classementEQ1 AS
 SELECT 
         classementCR.Equipe,
@@ -36,20 +36,20 @@ SELECT
         FROM classementCR
         GROUP BY classementCR.Equipe ;
 
-drop view   CLASSEMENTEQ0;      
+drop view   CLASSEMENTEQ0 cascade;      
 CREATE VIEW CLASSEMENTEQ0 AS
 SELECT Equipe.nom as Equipe ,
         0 AS POINTS
         FROM Equipe;            
 
-drop view CLASSEMENTEQ2;
+drop view CLASSEMENTEQ2 cascade;
 CREATE VIEW CLASSEMENTEQ2 AS 
     select * FROM classementEQ1 UNION SELECT * FROM CLASSEMENTEQ0 
     ;
 
-drop view CLASSEMENTEQ;
+drop view CLASSEMENTEQ cascade;
 CREATE VIEW CLASSEMENTEQ  AS 
-    SELECT  RANK() OVER (ORDER BY sum(points) desc) AS rang,
+    SELECT  DENSE_RANK() OVER (ORDER BY sum(points) desc) AS rang,
     Equipe,
     sum(points) as points 
     FROM CLASSEMENTEQ2
