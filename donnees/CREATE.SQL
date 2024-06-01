@@ -1,0 +1,71 @@
+-- Creation des sequences
+CREATE SEQUENCE seq_appuser_id START 1;
+CREATE SEQUENCE seq_equipe_id START 1;
+CREATE SEQUENCE seq_coureur_id START 1;
+CREATE SEQUENCE seq_categorie_id START 1;
+CREATE SEQUENCE seq_coureurcategorie_id START 1;
+CREATE SEQUENCE seq_etape_id START 1;
+CREATE SEQUENCE seq_resultatetape_id START 1;
+
+-- Creation de la table AppUser
+CREATE TABLE AppUser (
+    ID VARCHAR(10) PRIMARY KEY DEFAULT 'APP' || LPAD(nextval('seq_appuser_id')::text, 4, '0'),
+    login VARCHAR(50),
+    pswd VARCHAR(50)
+);
+
+
+-- Creation de la table Equipe
+CREATE TABLE Equipe (
+    ID VARCHAR(10) PRIMARY KEY DEFAULT 'EQ' || LPAD(nextval('seq_equipe_id')::text, 4, '0'),
+    nom VARCHAR(50),
+    login VARCHAR(50),
+    pswd VARCHAR(50)
+);
+
+
+-- Creation de la table Coureur
+CREATE TABLE Coureur (
+    ID VARCHAR(10) PRIMARY KEY DEFAULT 'CR' || LPAD(nextval('seq_coureur_id')::text, 4, '0'),
+    nom VARCHAR(50),
+    numerodossard INT,
+    genre INT,
+    dtn DATE,
+    Equipe VARCHAR(10) REFERENCES Equipe(ID)
+);
+
+
+-- Creation de la table Categorie
+CREATE TABLE Categorie (
+    ID VARCHAR(10) PRIMARY KEY DEFAULT 'CT' || LPAD(nextval('seq_categorie_id')::text, 4, '0'),
+    nom VARCHAR(50)
+);
+
+
+-- Creation de la table CoureurCategorie
+CREATE TABLE CoureurCategorie (
+    ID VARCHAR(10) PRIMARY KEY DEFAULT 'CRCT' || LPAD(nextval('seq_coureurcategorie_id')::text, 4, '0'),
+    Categorie VARCHAR(10) REFERENCES Categorie(ID),
+    Coureur VARCHAR(10) REFERENCES Coureur(ID)
+);
+
+
+-- Creation de la table Etape
+CREATE TABLE Etape (
+    ID VARCHAR(10) PRIMARY KEY DEFAULT 'ST' || LPAD(nextval('seq_etape_id')::text, 4, '0'),
+    Nom VARCHAR(50),
+    LongueurKM INT,
+    nbCoureur INT,
+    rangEtape INT
+);
+
+
+-- Creation de la table ResultatEtape
+CREATE TABLE ResultatEtape (
+    ID VARCHAR(10) PRIMARY KEY DEFAULT 'RES' || LPAD(nextval('seq_resultatetape_id')::text, 4, '0'),
+    Etape VARCHAR(10) REFERENCES Etape(ID),
+    Coureur VARCHAR(10) REFERENCES Coureur(ID),
+    Depart INTERVAL,
+    Arrivee INTERVAL
+);
+
