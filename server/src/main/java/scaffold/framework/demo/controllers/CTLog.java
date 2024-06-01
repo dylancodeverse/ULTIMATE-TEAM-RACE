@@ -13,4 +13,9 @@ public class CTLog {
         return "redirect:/equipe/login";
     }
 
+    @GetMapping("/unauthorized")
+    public String getMethodName() {
+        return "pages/forbidden/forbidden";
+    }
+
 }
