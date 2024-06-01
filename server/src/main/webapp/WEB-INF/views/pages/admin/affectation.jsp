@@ -22,7 +22,7 @@
             <header>
                 <form method="post" action="/admin/affectation" method="POST">
                     <div class="row">
-                        <h2>Affectation des coureurs a une etape de course</h2>
+                        <h2>Affectation des heures de depart et arrivee des coureurs a une etape de course</h2>
                     </div>
                     
                     <div class="row">

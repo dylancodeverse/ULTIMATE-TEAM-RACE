@@ -12,13 +12,6 @@
          <span class="tooltip">Accueil</span>
       </li>
       <li>
-        <a href="/admin/affectation">
-          <i class="ti ti-layout-dashboard"></i>
-          <span class="links_name">Affectation</span>
-        </a>
-         <span class="tooltip">Affectation</span>
-      </li>
-      <li>
         <a href="/home/classementCR">
           <i class="ti ti-layout-dashboard"></i>
           <span class="links_name">Classement Coureur</span>
@@ -32,13 +25,39 @@
         </a>
          <span class="tooltip">Classement Equipe</span>
       </li>
-      <li>
-        <a href="/equipe/affectation">
-          <i class="ti ti-layout-dashboard"></i>
-          <span class="links_name">Affectation</span>
-        </a>
-         <span class="tooltip">Affectation</span>
-      </li>
+
+      <% Integer admin = (Integer)(request.getSession().getAttribute("ISADMIN"));
+
+      if(admin==10){%>
+        <li>
+          <a href="/admin/affectation">
+            <i class="ti ti-layout-dashboard"></i>
+            <span class="links_name">Affectation</span>
+          </a>
+           <span class="tooltip">Affectation</span>
+        </li>
+        <li>
+          <a href="/admin/reinit">
+            <i class="ti ti-layout-dashboard"></i>
+            <span class="links_name">Reinitialiser les donnees</span>
+          </a>
+           <span class="tooltip">Reinitialiser les donnees</span>
+        </li>
+      <%  
+      }
+      else{ %>
+        <li>
+          <a href="/equipe/affectation">
+            <i class="ti ti-layout-dashboard"></i>
+            <span class="links_name">Affectation</span>
+          </a>
+           <span class="tooltip">Affectation</span>
+        </li>
+      <%  
+      }
+      %>
+
+
 
      <div class="profile">
          <div class="profile-details">

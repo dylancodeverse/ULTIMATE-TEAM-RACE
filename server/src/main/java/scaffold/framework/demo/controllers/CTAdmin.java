@@ -94,4 +94,15 @@ public class CTAdmin {
         }
     }
 
+    @GetMapping("/reinit")
+    public String getMethodName() throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            connection.createStatement().executeQuery("select reset_database()");
+        } finally {
+            connection.close();
+        }
+        return "redirect:/home/home";
+    }
+
 }
