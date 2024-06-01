@@ -55,3 +55,14 @@ CREATE VIEW CLASSEMENTEQ  AS
     FROM CLASSEMENTEQ2
     GROUP BY Equipe ORDER by rang ;
     
+drop view etatcompteparetape ;
+CREATE VIEW etatcompteparetape as
+    with resultatetapeavecequipe as
+    (select resultatetape.etape , resultatetape.Coureur , Coureur.equipe from
+    resultatetape join Coureur on resultatetape.Coureur = Coureur.id )
+    ,countetat as
+    (select count(etape) as nb, etape , equipe from resultatetapeavecequipe GROUP by etape , equipe) ,
+    columnadded as
+    (select nbcoureur, countetat.* from countetat join etape on etape.id= countetat.etape)
+
+    select nbCoureur=nb as estcomplet , etape ,equipe from columnadded;

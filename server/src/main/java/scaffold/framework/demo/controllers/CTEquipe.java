@@ -18,6 +18,7 @@ import scaffold.framework.demo.models.course.Etape;
 import scaffold.framework.demo.models.course.ResultatEtape;
 import scaffold.framework.demo.models.equipe.Coureur;
 import scaffold.framework.demo.models.equipe.Equipe;
+import scaffold.framework.demo.models.equipe.Etatcompteparetape;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -82,9 +83,17 @@ public class CTEquipe {
 
     @PostMapping("/affectation")
     @Auth(classSource = RulesConf.class, rule = "isEquipe")
-    public String affectation(String etape, String coureur) throws Exception {
+    public String affectation(String etape, String coureur, HttpServletRequest request) throws Exception {
         Connection connection = dataSource.getConnection();
+        String equipeID = request.getSession().getAttribute("USRID").toString();
         try {
+            Etatcompteparetape[] etatcompteparetape = new Etatcompteparetape().selectWhere(connection, true,
+                    "etape='" + etape + "' and equipe='" + equipeID + "'");
+            if (etatcompteparetape.length > 0) {
+                if (etatcompteparetape[0].getEstcomplet()) {
+                    throw new Exception("Deja complet");
+                }
+            }
             ResultatEtape resutlatEtape = new ResultatEtape();
             resutlatEtape.setEtape(etape);
             resutlatEtape.setCoureur(coureur);
