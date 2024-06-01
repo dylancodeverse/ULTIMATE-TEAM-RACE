@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class RulesConf {
     public void loginPresent(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getSession().getAttribute("USRID") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/equipe/login");
         } else {
             System.out.println("passed");
         }
