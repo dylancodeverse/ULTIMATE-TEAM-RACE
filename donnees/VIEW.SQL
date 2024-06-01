@@ -14,7 +14,7 @@ SELECT ResultatEtape.ID , ResultatEtape.Depart,
 
 DROP view classementCR;
 CREATE view classementCR AS
-SELECT  RANK() OVER (ORDER BY COMPLETResultatEtape.Arrivee ) AS rang,
+SELECT  RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) AS rang,
         COMPLETResultatEtape.* , 
         CASE 
             WHEN RANK() OVER (ORDER BY COMPLETResultatEtape.Arrivee ) =1 THEN 10
@@ -24,7 +24,8 @@ SELECT  RANK() OVER (ORDER BY COMPLETResultatEtape.Arrivee ) AS rang,
             WHEN RANK() OVER (ORDER BY COMPLETResultatEtape.Arrivee ) =5 THEN 1
             ELSE 0
         END AS POINTS    
-        FROM COMPLETResultatEtape
+        FROM COMPLETResultatEtape where COMPLETResultatEtape.Arrivee is not null and
+        COMPLETResultatEtape.Depart is not null
         ORDER BY COMPLETResultatEtape.Arrivee;
 
 drop view classementEQ1 ;
@@ -46,8 +47,9 @@ CREATE VIEW CLASSEMENTEQ2 AS
     select * FROM classementEQ1 UNION SELECT * FROM CLASSEMENTEQ0 
     ;
 
+drop view CLASSEMENTEQ;
 CREATE VIEW CLASSEMENTEQ  AS 
-    SELECT  RANK() OVER (ORDER BY sum(points) ) AS rang,
+    SELECT  RANK() OVER (ORDER BY sum(points) desc) AS rang,
     Equipe,
     sum(points) as points 
     FROM CLASSEMENTEQ2

@@ -46,7 +46,7 @@
                             <td><%= classement.getRang() %></td>
                             <td>
                             <%= classement.getCoureurnom() %>
-                            <small class="d-block"><%= classement.getEquipe() %> </small>
+                            <small class="d-block">De l'equipe <%= classement.getEquipe() %> </small>
                             </td>
                             <td><%= classement.getPoints() %></td>
                             <td><%= classement.getEtapenom() %></td>

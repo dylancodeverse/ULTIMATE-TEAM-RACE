@@ -1,5 +1,7 @@
 package scaffold.framework.demo.models.course;
 
+import java.math.BigDecimal;
+
 import orm.DynamicORM;
 
 public class ClassementEQ extends DynamicORM<ClassementEQ> {
@@ -9,6 +11,10 @@ public class ClassementEQ extends DynamicORM<ClassementEQ> {
 
     public Long getRang() {
         return rang;
+    }
+
+    public void setPoints(BigDecimal pts) {
+        setPoints(Integer.valueOf(pts.toPlainString()));
     }
 
     public void setRang(Long rang) {

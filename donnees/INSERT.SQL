@@ -3,9 +3,12 @@ INSERT INTO AppUser (login, pswd) VALUES ('mirary', 'soa');
 
 -- Insertion de données dans la table Equipe
 INSERT INTO Equipe (nom, login, pswd) VALUES ('A', 'a', '7');
+INSERT INTO Equipe (nom, login, pswd) VALUES ('B', 'b', '7');
 
 -- Insertion de données dans la table Coureur
 INSERT INTO Coureur (nom, numerodossard, genre, dtn, Equipe) VALUES ('Dylan', 7, 1, '2024-04-19', 'EQ0001');
+INSERT INTO Coureur (nom, numerodossard, genre, dtn, Equipe) VALUES ('SOA', 7, 1, '2024-04-19', 'EQ0003');
+INSERT INTO Coureur (nom, numerodossard, genre, dtn, Equipe) VALUES ('MASINA', 7, 1, '2024-04-19', 'EQ0003');
 
 -- Insertion de données dans la table Categorie
 INSERT INTO Categorie (nom) VALUES ('junior');

@@ -56,7 +56,8 @@ public class ResultatEtape extends DynamicORM<ResultatEtape> {
 
     public void setDepart(String depart2) {
         String[] s = depart2.split(":");
-        setDepart(new PGInterval(0, 0, 0, Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2])));
+        setDepart(new PGInterval(0, 0, 0, 
+        Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2])));
     }
 
     public void setArrivee(String arrivee2) {

@@ -43,7 +43,6 @@
                         <tr scope="row">
                             <td><%= classement.getRang() %></td>
                             <td>
-                            <%= classement.getEquipe() %>
                             <small class="d-block"><%= classement.getEquipe() %> </small>
                             </td>
                             <td><%= classement.getPoints() %></td>
