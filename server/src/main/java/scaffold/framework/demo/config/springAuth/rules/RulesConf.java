@@ -12,7 +12,7 @@ public class RulesConf {
         } else {
             if (((Integer) request.getSession().getAttribute("ISADMIN")) == 0) {
                 System.out.println("passed");
-            }else{
+            } else {
                 response.sendRedirect(request.getContextPath() + "/unhautorized");
             }
         }
@@ -22,6 +22,14 @@ public class RulesConf {
         Integer role = ((Integer) request.getSession().getAttribute("ISADMIN"));
         if (role < 10) {
             response.sendRedirect(request.getContextPath() + "/unauthorized");
+        }
+    }
+
+    public void connected(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getSession().getAttribute("USRID") == null) {
+            response.sendRedirect(request.getContextPath() + "/equipe/login");
+        } else {
+            System.out.println("passed");
         }
     }
 }

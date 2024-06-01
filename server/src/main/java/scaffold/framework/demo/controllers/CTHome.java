@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import scaffold.framework.demo.config.springAuth.annotations.Auth;
+import scaffold.framework.demo.config.springAuth.rules.RulesConf;
 import scaffold.framework.demo.models.course.Etape;
 
 @Controller
@@ -20,6 +22,7 @@ public class CTHome {
     DataSource dataSource;
 
     @GetMapping("/home")
+    @Auth(classSource = RulesConf.class, rule = "connected")
     public String getMethodName(Model model) throws SQLException, Exception {
         model.addAttribute("etapes", new Etape().select(dataSource.getConnection(), false));
         return "pages/home/etape";

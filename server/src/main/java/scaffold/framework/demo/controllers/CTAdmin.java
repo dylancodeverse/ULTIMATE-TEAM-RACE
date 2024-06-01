@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import scaffold.framework.demo.models.AppUser;
+import scaffold.framework.demo.models.course.CompletResultatEtape;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -54,6 +56,15 @@ public class CTAdmin {
                 connection.close();
             }
         }
+    }
+
+    @GetMapping("/affectation")
+    public String getPageAffectationTemps(Model model) throws Exception {
+
+        CompletResultatEtape[] completResultatEtapes = new CompletResultatEtape()
+                .selectWhere("depart is null or arrivee is null");
+        model.addAttribute("completResultatEtapes", completResultatEtapes);
+        return "/pages/admin/affectation";
     }
 
 }
