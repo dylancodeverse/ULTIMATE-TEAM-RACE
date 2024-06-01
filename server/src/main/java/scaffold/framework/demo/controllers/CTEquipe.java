@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import scaffold.framework.demo.config.springAuth.annotations.Auth;
+import scaffold.framework.demo.config.springAuth.rules.RulesConf;
+import scaffold.framework.demo.models.course.Etape;
+import scaffold.framework.demo.models.course.ResultatEtape;
+import scaffold.framework.demo.models.equipe.Coureur;
 import scaffold.framework.demo.models.equipe.Equipe;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +56,46 @@ public class CTEquipe {
                 connection.close();
             }
         }
+    }
+
+    @GetMapping("/affectation")
+    @Auth(classSource = RulesConf.class, rule = "isEquipe")
+    public String pageAffectation(Model model, HttpServletRequest request) throws Exception {
+        Connection connection = dataSource.getConnection();
+        connection.setAutoCommit(false);
+        try {
+            HttpSession session = request.getSession();
+            String equipeID = session.getAttribute("USRID").toString();
+            // prendre tous les coureurs de l'equipe
+            Coureur[] coureurs = new Coureur().selectWhere(connection, true, "Equipe='" + equipeID + "'");
+            model.addAttribute("coureurs", coureurs);
+            // prendre tous les etapes possibles
+            Etape[] etapes = new Etape().select(connection, true);
+            model.addAttribute("etapes", etapes);
+
+            return "pages/equipe/affectation";
+
+        } finally {
+            connection.close();
+        }
+    }
+
+    @PostMapping("/affectation")
+    @Auth(classSource = RulesConf.class, rule = "isEquipe")
+    public String affectation(String etape, String coureur) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            ResultatEtape resutlatEtape = new ResultatEtape();
+            resutlatEtape.setEtape(etape);
+            resutlatEtape.setCoureur(coureur);
+            resutlatEtape.insert(connection, false);
+            return "redirect:/equipe/affectation";
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
+
     }
 
 }
