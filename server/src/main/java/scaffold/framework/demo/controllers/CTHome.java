@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import scaffold.framework.demo.config.springAuth.annotations.Auth;
 import scaffold.framework.demo.config.springAuth.rules.RulesConf;
 import scaffold.framework.demo.models.course.ClassementCR;
+import scaffold.framework.demo.models.course.ClassementEQ;
 import scaffold.framework.demo.models.course.Etape;
 
 @Controller
@@ -31,16 +32,30 @@ public class CTHome {
     }
 
     @GetMapping("/classementCR")
-    public String getPage(Model model) throws Exception {
+    public String getPageCR(Model model) throws Exception {
         Connection connection = dataSource.getConnection();
         try {
-            model.addAttribute("classement", new ClassementCR().select(connection,false));
+            model.addAttribute("classements", new ClassementCR().select(connection, false));
             return "pages/home/classementCR";
-        } finally{
+        } finally {
             if (!connection.isClosed()) {
                 connection.close();
             }
         }
+    }
+
+    @GetMapping("/classementEQ")
+    public String getPageEQ(Model model) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            model.addAttribute("classements", new ClassementEQ().select(connection, false));
+            return "pages/home/classementEQ";
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
+
     }
 
 }

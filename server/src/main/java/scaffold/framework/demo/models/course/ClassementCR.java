@@ -5,7 +5,7 @@ import org.postgresql.util.PGInterval;
 import orm.DynamicORM;
 
 public class ClassementCR extends DynamicORM<ClassementCR> {
-    Integer rang;
+    Long rang;
     String id;
     PGInterval depart;
     PGInterval arrivee;
@@ -14,11 +14,11 @@ public class ClassementCR extends DynamicORM<ClassementCR> {
     String equipe;
     Integer points;
 
-    public Integer getRang() {
+    public Long getRang() {
         return rang;
     }
 
-    public void setRang(Integer rang) {
+    public void setRang(Long rang) {
         this.rang = rang;
     }
 
@@ -34,12 +34,20 @@ public class ClassementCR extends DynamicORM<ClassementCR> {
         return depart;
     }
 
+    public String getDepartSTR() {
+        return depart.toString().split("days")[1];
+    }
+
     public void setDepart(PGInterval depart) {
         this.depart = depart;
     }
 
     public PGInterval getArrivee() {
         return arrivee;
+    }
+
+    public String getArriveeSTR() {
+        return arrivee.toString().split("days")[1];
     }
 
     public void setArrivee(PGInterval arrivee) {
