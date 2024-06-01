@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import scaffold.framework.demo.models.AppUser;
 import scaffold.framework.demo.models.course.CompletResultatEtape;
-
+import scaffold.framework.demo.models.course.ResultatEtape;
 
 @Controller
 @RequestMapping("/admin")
@@ -60,11 +60,34 @@ public class CTAdmin {
 
     @GetMapping("/affectation")
     public String getPageAffectationTemps(Model model) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            CompletResultatEtape[] completResultatEtapes = new CompletResultatEtape()
+                    .selectWhere(connection, false, "depart is null or arrivee is null");
+            model.addAttribute("completResultatEtapes", completResultatEtapes);
+            return "/pages/admin/affectation";
+        } finally {
+            if (connection.isClosed()) {
+                connection.close();
+            }
+        }
+    }
 
-        CompletResultatEtape[] completResultatEtapes = new CompletResultatEtape()
-                .selectWhere("depart is null or arrivee is null");
-        model.addAttribute("completResultatEtapes", completResultatEtapes);
-        return "/pages/admin/affectation";
+    @PostMapping("/affectation")
+    public String affecter(String ID, String depart, String arrivee) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            ResultatEtape resultatEtape = new ResultatEtape();
+            resultatEtape.setID(ID);
+            resultatEtape.setDepart(depart);
+            resultatEtape.setArrivee(arrivee);
+            resultatEtape.updateById(connection, false);
+            return "redirect:/admin/affectation";
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
     }
 
 }

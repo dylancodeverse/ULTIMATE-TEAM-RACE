@@ -1,5 +1,6 @@
 package scaffold.framework.demo.controllers;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import scaffold.framework.demo.config.springAuth.annotations.Auth;
 import scaffold.framework.demo.config.springAuth.rules.RulesConf;
+import scaffold.framework.demo.models.course.ClassementCR;
 import scaffold.framework.demo.models.course.Etape;
 
 @Controller
@@ -26,6 +28,19 @@ public class CTHome {
     public String getMethodName(Model model) throws SQLException, Exception {
         model.addAttribute("etapes", new Etape().select(dataSource.getConnection(), false));
         return "pages/home/etape";
+    }
+
+    @GetMapping("/classementCR")
+    public String getPage(Model model) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            model.addAttribute("classement", new ClassementCR().select(connection,false));
+            return "pages/home/classementCR";
+        } finally{
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
     }
 
 }
