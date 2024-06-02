@@ -14,14 +14,15 @@ SELECT ResultatEtape.ID , ResultatEtape.Depart,
 
 DROP view classementCR cascade;
 CREATE view classementCR AS
-SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) AS rang,
+SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) 
+AS rang,
         COMPLETResultatEtape.* , 
         CASE 
-            WHEN DENSE_RANK() OVER (ORDER BY COMPLETResultatEtape.Arrivee ) =1 THEN 10
-            WHEN DENSE_RANK() OVER (ORDER BY COMPLETResultatEtape.Arrivee ) =2 THEN 6
-            WHEN DENSE_RANK() OVER (ORDER BY COMPLETResultatEtape.Arrivee ) =3 THEN 4
-            WHEN DENSE_RANK() OVER (ORDER BY COMPLETResultatEtape.Arrivee ) =4 THEN 2
-            WHEN DENSE_RANK() OVER (ORDER BY COMPLETResultatEtape.Arrivee ) =5 THEN 1
+            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =1 THEN 10
+            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =2 THEN 6
+            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =3 THEN 4
+            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =4 THEN 2
+            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =5 THEN 1
             ELSE 0
         END AS POINTS    
         FROM COMPLETResultatEtape where COMPLETResultatEtape.Arrivee is not null and
