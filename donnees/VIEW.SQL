@@ -1,4 +1,5 @@
 drop VIEW COMPLETResultatEtape cascade; 
+-- resultat avec libelle complet
 CREATE VIEW COMPLETResultatEtape AS
 SELECT ResultatEtape.ID , ResultatEtape.Depart,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
@@ -12,7 +13,10 @@ SELECT ResultatEtape.ID , ResultatEtape.Depart,
 
 
 
+
+
 DROP view classementCR cascade;
+-- classement des coureurs par etape 
 CREATE view classementCR AS
 SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) 
 AS rang,
@@ -30,6 +34,7 @@ AS rang,
         ORDER BY COMPLETResultatEtape.Arrivee;
 
 drop view classementEQ1 cascade;
+-- classement des equipes par etape
 CREATE VIEW classementEQ1 AS
 SELECT 
         classementCR.Equipe,
@@ -38,17 +43,20 @@ SELECT
         GROUP BY classementCR.Equipe ;
 
 drop view   CLASSEMENTEQ0 cascade;      
+    -- initialisation point pour tous les equipes
 CREATE VIEW CLASSEMENTEQ0 AS
 SELECT Equipe.nom as Equipe ,
         0 AS POINTS
         FROM Equipe;            
 
 drop view CLASSEMENTEQ2 cascade;
+--  union initialisation et equipe avec leur points
 CREATE VIEW CLASSEMENTEQ2 AS 
     select * FROM classementEQ1 UNION SELECT * FROM CLASSEMENTEQ0 
     ;
 
 drop view CLASSEMENTEQ cascade;
+-- classement complet des equipes 
 CREATE VIEW CLASSEMENTEQ  AS 
     SELECT  DENSE_RANK() OVER (ORDER BY sum(points) desc) AS rang,
     Equipe,
@@ -57,6 +65,7 @@ CREATE VIEW CLASSEMENTEQ  AS
     GROUP BY Equipe ORDER by rang ;
     
 drop view etatcompteparetape ;
+-- verification des etats de coureur participant a une etape par equipe (complet ou pas)
 CREATE VIEW etatcompteparetape as
     with resultatetapeavecequipe as
     (select resultatetape.etape , resultatetape.Coureur , Coureur.equipe from
