@@ -36,7 +36,7 @@ CREATE TABLE Coureur (
     ID VARCHAR(250) PRIMARY KEY DEFAULT 'CR' || LPAD(nextval('seq_coureur_id')::text, 4, '0'),
     nom VARCHAR(250),
     numerodossard INT,
-    genre INT,
+    genre VARCHAR(250),
     dtn DATE,
     Equipe VARCHAR(250) REFERENCES Equipe(ID)
 );
@@ -70,8 +70,9 @@ CREATE TABLE Etape (
 
 
 -- Creation de la table ResultatEtape
+drop table ResultatEtape;
 CREATE TABLE ResultatEtape (
-    ID VARCHAR(250) PRIMARY KEY DEFAULT 'RES' || LPAD(nextval('seq_resultatetape_id')::text, 4, '0'),
+    ID VARCHAR(250) PRIMARY KEY DEFAULT 'RES' || LPAD(nextval('seq_resultatetape_id')::text, 8, '0'),
     Etape VARCHAR(250) REFERENCES Etape(ID),
     Coureur VARCHAR(250) REFERENCES Coureur(ID),
     Arrivee timestamp
@@ -83,7 +84,7 @@ CREATE TABLE RESULTATCSV (
     numero_dossard INTEGER,
     nom VARCHAR(250),
     genre VARCHAR(250),
-    date_naissance	timestamp,
+    date_naissance	DATE,
     equipe	VARCHAR(250),
     arrivee timestamp
 );

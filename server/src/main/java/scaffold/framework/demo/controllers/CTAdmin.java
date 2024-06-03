@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.opencsv.bean.CsvToBean;
@@ -30,6 +31,7 @@ import scaffold.framework.demo.models.course.CompletResultatEtape;
 import scaffold.framework.demo.models.course.ResultatEtape;
 import scaffold.framework.demo.models.course.Etape;
 import scaffold.framework.demo.models.imports.Point;
+import scaffold.framework.demo.models.imports.ResultatCSV;
 
 @Controller
 @RequestMapping("/admin")
@@ -130,7 +132,8 @@ public class CTAdmin {
 
     @PostMapping("/importetaperesultats")
     @Auth(classSource = RulesConf.class, rule = "isAdmin")
-    public String importER(MultipartFile etape, MultipartFile resultat, char separateur) throws Exception {
+    public String importER(@RequestParam("etape") MultipartFile etape, @RequestParam("resultat") MultipartFile resultat,
+            char separateur) throws Exception {
         Connection connection = dataSource.getConnection();
         connection.setAutoCommit(false);
         try {
@@ -148,20 +151,22 @@ public class CTAdmin {
                             .build();
                     List<Etape> importedDataList = csvToBean.parse();
                     Etape.insertAll(connection, importedDataList);
+                    System.out.println("vita etape");
                 }
                 // import resultat
                 if (!resultat.isEmpty()) {
                     try (
                             Reader reader = new BufferedReader(
-                                    new InputStreamReader(etape.getInputStream()))) {
-                        CsvToBean<Etape> csvToBean = new CsvToBeanBuilder<Etape>(
+                                    new InputStreamReader(resultat.getInputStream()))) {
+                        CsvToBean<ResultatCSV> csvToBean = new CsvToBeanBuilder<ResultatCSV>(
                                 reader)
-                                .withType(Etape.class)
+                                .withType(ResultatCSV.class)
                                 .withIgnoreLeadingWhiteSpace(true)
                                 .withSeparator(separateur)
                                 .build();
-                        List<Etape> importedDataList = csvToBean.parse();
-                        Etape.insertAll(connection, importedDataList);
+                        List<ResultatCSV> importedDataList = csvToBean.parse();
+                        ResultatCSV.insertAll(connection, importedDataList);
+                        ResultatCSV.insertAllPeripherie(connection);
                     }
 
                 }
@@ -181,7 +186,7 @@ public class CTAdmin {
 
     @PostMapping("/importpoint")
     @Auth(classSource = RulesConf.class, rule = "isAdmin")
-    public String importPT(MultipartFile point, char separateur) throws Exception {
+    public String importPT(@RequestParam("point") MultipartFile point, char separateur) throws Exception {
         Connection connection = dataSource.getConnection();
         connection.setAutoCommit(false);
         try {

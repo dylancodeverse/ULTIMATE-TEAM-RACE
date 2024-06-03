@@ -31,16 +31,16 @@ public class Etape extends DynamicORM<Etape> {
     @CsvBindByName(column = "longueur")
     String longueur;
     @Ignore
-    @CsvBindByName(column = "nbcoureur")
+    @CsvBindByName(column = "nb coureur")
     String nbcoureur;
     @Ignore
     @CsvBindByName(column = "rang")
     String rang;
     @Ignore
-    @CsvBindByName(column = "datedepart")
+    @CsvBindByName(column = "date depart")
     String datedepart;
     @Ignore
-    @CsvBindByName(column = "heuredepart")
+    @CsvBindByName(column = "heure depart")
     String heuredepart;
 
     public void setAll() {

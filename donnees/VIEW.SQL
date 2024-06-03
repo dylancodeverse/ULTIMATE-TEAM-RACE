@@ -3,7 +3,7 @@ drop VIEW COMPLETResultatEtape cascade;
 CREATE VIEW COMPLETResultatEtape AS
 SELECT ResultatEtape.ID ,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
-    Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe
+    Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe, etape.id as etapeid
     FROM ResultatEtape 
     JOIN Coureur ON Coureur.ID = ResultatEtape.Coureur
     JOIN Etape ON Etape.ID = ResultatEtape.Etape 
@@ -18,7 +18,7 @@ SELECT ResultatEtape.ID ,
 DROP view classementCRParEtape0 cascade;
 -- classement des coureurs par etape 
 CREATE view classementCRParEtape0 AS
-SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) 
+SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapeid ORDER BY COMPLETResultatEtape.Arrivee ) 
 AS rang,
         COMPLETResultatEtape.* 
         
@@ -34,14 +34,14 @@ CREATE view classementCRParEtape AS
 
 
 --  classement general des coureurs etape non prise en compte
-drop VIEW classementCR;
+drop VIEW classementCR cascade;
 
 CREATE VIEW classementCR AS
-SELECT DENSE_RANK() OVER (ORDER BY SUM(POINT)) AS RANG ,
+SELECT DENSE_RANK() OVER (ORDER BY SUM(POINT) desc) AS RANG ,
         CoureurNOM ,
         EQUIPE ,
         SUM(POINT) AS POINTS 
-        FROM classementCRParEtape GROUP BY CoureurNOM, EQUIPE ORDER BY RANG;
+        FROM classementCRParEtape GROUP BY CoureurNOM, EQUIPE ;
 
 
 drop view classementEQ1 cascade;
@@ -75,7 +75,7 @@ CREATE VIEW CLASSEMENTEQ  AS
     FROM CLASSEMENTEQ2
     GROUP BY Equipe ORDER by rang ;
     
-drop view etatcompteparetape ;
+drop view etatcompteparetape cascade;
 -- -- verification des etats de coureur participant a une etape par equipe (complet ou pas)
 CREATE VIEW etatcompteparetape as
     with resultatetapeavecequipe as
@@ -89,4 +89,4 @@ CREATE VIEW etatcompteparetape as
     select nbCoureur=nb as estcomplet , etape ,equipe from columnadded;
 
 
-CREATE VIEW 
+-- CREATE VIEW 
