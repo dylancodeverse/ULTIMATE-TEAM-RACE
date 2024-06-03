@@ -31,7 +31,9 @@
                     <div class="row">
                         <input type="file" name="resultat">
                     </div>
-
+                    <div class="row">
+                        <input type="text" name="separateur" placeholder="separateur">
+                    </div>
         
                 </form>
             </header>

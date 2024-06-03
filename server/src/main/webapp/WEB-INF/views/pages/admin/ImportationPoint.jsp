@@ -19,12 +19,15 @@
     <section class="home-section">
         <div class="container">
             <header>
-                <form method="post" action="/admin/importetaperesultats" method="POST">
+                <form method="post" action="/admin/importpoint" method="POST">
                     <div class="row">
                         <h2>Importation des donnees des points</h2>
                     </div>
                     <div class="row">
-                        <input type="file" name="etape">
+                        <input type="file" name="point">
+                    </div>
+                    <div class="row">
+                        <input type="text" name="separateur" placeholder="separateur">
                     </div>
                 </form>
             </header>

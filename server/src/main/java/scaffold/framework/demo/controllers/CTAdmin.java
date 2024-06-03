@@ -1,8 +1,12 @@
 package scaffold.framework.demo.controllers;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -12,6 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +28,10 @@ import scaffold.framework.demo.config.springAuth.rules.RulesConf;
 import scaffold.framework.demo.models.AppUser;
 import scaffold.framework.demo.models.course.CompletResultatEtape;
 import scaffold.framework.demo.models.course.ResultatEtape;
+import scaffold.framework.demo.models.imports.EtapeCSV;
+import scaffold.framework.demo.models.imports.PointCSV;
+
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/admin")
@@ -95,6 +107,7 @@ public class CTAdmin {
     }
 
     @GetMapping("/reinit")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
     public String getMethodName() throws Exception {
         Connection connection = dataSource.getConnection();
         try {
@@ -103,6 +116,105 @@ public class CTAdmin {
             connection.close();
         }
         return "redirect:/home/home";
+    }
+
+    @GetMapping("/importetaperesultats")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public String pageImport1() {
+        return "pages/admin/importationEtapeResultat";
+    }
+
+    @GetMapping("/importpoint")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public String pageImport2() {
+        return "pages/admin/importationPoint";
+    }
+
+    @PostMapping("/importetaperesultats")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public String importER(MultipartFile etape, MultipartFile resultat, char separateur) throws Exception {
+        Connection connection = dataSource.getConnection();
+        connection.setAutoCommit(false);
+        try {
+            // import etape
+
+            if (!etape.isEmpty()) {
+                try (
+                        Reader reader = new BufferedReader(
+                                new InputStreamReader(etape.getInputStream()))) {
+                    CsvToBean<EtapeCSV> csvToBean = new CsvToBeanBuilder<EtapeCSV>(
+                            reader)
+                            .withType(EtapeCSV.class)
+                            .withIgnoreLeadingWhiteSpace(true)
+                            .withSeparator(separateur)
+                            .build();
+                    List<EtapeCSV> importedDataList = csvToBean.parse();
+                    EtapeCSV.insertAll(connection, importedDataList);
+                    EtapeCSV.insertAllPeripherie(connection);
+                }
+                // import resultat
+                if (!resultat.isEmpty()) {
+                    try (
+                            Reader reader = new BufferedReader(
+                                    new InputStreamReader(etape.getInputStream()))) {
+                        CsvToBean<EtapeCSV> csvToBean = new CsvToBeanBuilder<EtapeCSV>(
+                                reader)
+                                .withType(EtapeCSV.class)
+                                .withIgnoreLeadingWhiteSpace(true)
+                                .withSeparator(separateur)
+                                .build();
+                        List<EtapeCSV> importedDataList = csvToBean.parse();
+                        EtapeCSV.insertAll(connection, importedDataList);
+                        EtapeCSV.insertAllPeripherie(connection);
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            if (!connection.isClosed()) {
+                connection.commit();
+                connection.close();
+            }
+        }
+
+        return "redirect:/admin/importetaperesultats";
+    }
+
+    @PostMapping("/importpoint")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public String importPT(MultipartFile point, char separateur) throws Exception {
+        Connection connection = dataSource.getConnection();
+        connection.setAutoCommit(false);
+        try {
+            // import etape
+
+            if (!point.isEmpty()) {
+                try (
+                        Reader reader = new BufferedReader(
+                                new InputStreamReader(point.getInputStream()))) {
+                    CsvToBean<PointCSV> csvToBean = new CsvToBeanBuilder<PointCSV>(
+                            reader)
+                            .withType(PointCSV.class)
+                            .withIgnoreLeadingWhiteSpace(true)
+                            .withSeparator(separateur)
+                            .build();
+                    List<PointCSV> importedDataList = csvToBean.parse();
+                    PointCSV.insertAll(connection, importedDataList);
+                }
+            }
+        } catch (Exception e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            if (!connection.isClosed()) {
+                connection.commit();
+                connection.close();
+            }
+        }
+        return "redirect:/admin/importpoint";
     }
 
 }
