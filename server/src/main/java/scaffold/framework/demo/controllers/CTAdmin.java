@@ -28,10 +28,8 @@ import scaffold.framework.demo.config.springAuth.rules.RulesConf;
 import scaffold.framework.demo.models.AppUser;
 import scaffold.framework.demo.models.course.CompletResultatEtape;
 import scaffold.framework.demo.models.course.ResultatEtape;
-import scaffold.framework.demo.models.imports.EtapeCSV;
-import scaffold.framework.demo.models.imports.PointCSV;
-
-import org.springframework.web.bind.annotation.RequestBody;
+import scaffold.framework.demo.models.course.Etape;
+import scaffold.framework.demo.models.imports.Point;
 
 @Controller
 @RequestMapping("/admin")
@@ -142,30 +140,28 @@ public class CTAdmin {
                 try (
                         Reader reader = new BufferedReader(
                                 new InputStreamReader(etape.getInputStream()))) {
-                    CsvToBean<EtapeCSV> csvToBean = new CsvToBeanBuilder<EtapeCSV>(
+                    CsvToBean<Etape> csvToBean = new CsvToBeanBuilder<Etape>(
                             reader)
-                            .withType(EtapeCSV.class)
+                            .withType(Etape.class)
                             .withIgnoreLeadingWhiteSpace(true)
                             .withSeparator(separateur)
                             .build();
-                    List<EtapeCSV> importedDataList = csvToBean.parse();
-                    EtapeCSV.insertAll(connection, importedDataList);
-                    EtapeCSV.insertAllPeripherie(connection);
+                    List<Etape> importedDataList = csvToBean.parse();
+                    Etape.insertAll(connection, importedDataList);
                 }
                 // import resultat
                 if (!resultat.isEmpty()) {
                     try (
                             Reader reader = new BufferedReader(
                                     new InputStreamReader(etape.getInputStream()))) {
-                        CsvToBean<EtapeCSV> csvToBean = new CsvToBeanBuilder<EtapeCSV>(
+                        CsvToBean<Etape> csvToBean = new CsvToBeanBuilder<Etape>(
                                 reader)
-                                .withType(EtapeCSV.class)
+                                .withType(Etape.class)
                                 .withIgnoreLeadingWhiteSpace(true)
                                 .withSeparator(separateur)
                                 .build();
-                        List<EtapeCSV> importedDataList = csvToBean.parse();
-                        EtapeCSV.insertAll(connection, importedDataList);
-                        EtapeCSV.insertAllPeripherie(connection);
+                        List<Etape> importedDataList = csvToBean.parse();
+                        Etape.insertAll(connection, importedDataList);
                     }
 
                 }
@@ -195,14 +191,14 @@ public class CTAdmin {
                 try (
                         Reader reader = new BufferedReader(
                                 new InputStreamReader(point.getInputStream()))) {
-                    CsvToBean<PointCSV> csvToBean = new CsvToBeanBuilder<PointCSV>(
+                    CsvToBean<Point> csvToBean = new CsvToBeanBuilder<Point>(
                             reader)
-                            .withType(PointCSV.class)
+                            .withType(Point.class)
                             .withIgnoreLeadingWhiteSpace(true)
                             .withSeparator(separateur)
                             .build();
-                    List<PointCSV> importedDataList = csvToBean.parse();
-                    PointCSV.insertAll(connection, importedDataList);
+                    List<Point> importedDataList = csvToBean.parse();
+                    Point.insertAll(connection, importedDataList);
                 }
             }
         } catch (Exception e) {

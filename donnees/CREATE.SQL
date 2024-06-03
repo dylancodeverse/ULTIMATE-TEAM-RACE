@@ -77,3 +77,14 @@ CREATE TABLE ResultatEtape (
     Arrivee timestamp
 );
 
+drop  TABLE RESULTATCSV ;
+CREATE TABLE RESULTATCSV (
+    etape_rang	INTEGER,
+    numero_dossard INTEGER,
+    nom VARCHAR(250),
+    genre VARCHAR(250),
+    date_naissance	timestamp,
+    equipe	VARCHAR(250),
+    arrivee timestamp
+);
+-- 

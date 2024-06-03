@@ -87,3 +87,6 @@ CREATE VIEW etatcompteparetape as
     (select nbcoureur, countetat.* from countetat join etape on etape.id= countetat.etape)
 
     select nbCoureur=nb as estcomplet , etape ,equipe from columnadded;
+
+
+CREATE VIEW 
