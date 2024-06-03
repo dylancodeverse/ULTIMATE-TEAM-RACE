@@ -17,7 +17,7 @@ CREATE TABLE AppUser (
 
 CREATE TABLE POINT(
     ID VARCHAR(250) PRIMARY KEY DEFAULT 'PT'|| LPAD(nextval('seq_point_id')::text,4,'0'),
-    rang int ,
+    ranK int ,
     point int
 );
 

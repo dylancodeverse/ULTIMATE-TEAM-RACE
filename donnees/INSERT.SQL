@@ -21,3 +21,5 @@ INSERT INTO Etape (Nom, LongueurKM, nbCoureur, rangEtape) VALUES ('Betsizaraina'
 
 -- Insertion de données dans la table ResultatEtape
 INSERT INTO ResultatEtape (Etape, Coureur, Depart, Arrivee) VALUES ('ST0002', 'CR0008', '19:22:50', '26:01:01');
+
+INSERT INTO POINT(ranK,point) values(1,10),(2,6),(3,4),(4,2),(5,1);

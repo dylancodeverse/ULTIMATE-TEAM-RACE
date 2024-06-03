@@ -15,29 +15,32 @@ SELECT ResultatEtape.ID ,
 
 
 
-DROP view classementCRParEtape cascade;
+DROP view classementCRParEtape0 cascade;
 -- classement des coureurs par etape 
-CREATE view classementCRParEtape AS
+CREATE view classementCRParEtape0 AS
 SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) 
 AS rang,
-        COMPLETResultatEtape.* , 
-        CASE 
-            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =1 THEN 10
-            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =2 THEN 6
-            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =3 THEN 4
-            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =4 THEN 2
-            WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =5 THEN 1
-            ELSE 0
-        END AS POINTS    
-        FROM COMPLETResultatEtape where COMPLETResultatEtape.Arrivee is not null 
+        COMPLETResultatEtape.* 
+        
+        FROM COMPLETResultatEtape  
+                 
+        where COMPLETResultatEtape.Arrivee is not null
         ORDER BY COMPLETResultatEtape.Arrivee;
 
+DROP view classementCRParEtape cascade;
+CREATE view classementCRParEtape AS
+    select classementCRParEtape0.*, coalesce(point.rank,0) as point from classementCRParEtape0
+        left JOIN POINT ON POINT.RANK =RANG ORDER BY Arrivee;
+
+
 --  classement general des coureurs etape non prise en compte
+drop VIEW classementCR;
+
 CREATE VIEW classementCR AS
-SELECT DENSE_RANK() OVER (ORDER BY SUM(POINTS)) AS RANG ,
+SELECT DENSE_RANK() OVER (ORDER BY SUM(POINT)) AS RANG ,
         CoureurNOM ,
         EQUIPE ,
-        SUM(POINTS) AS POINTS 
+        SUM(POINT) AS POINTS 
         FROM classementCRParEtape GROUP BY CoureurNOM, EQUIPE ORDER BY RANG;
 
 
