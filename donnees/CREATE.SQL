@@ -45,8 +45,9 @@ CREATE TABLE Coureur (
 -- Creation de la table Categorie
 CREATE TABLE Categorie (
     ID VARCHAR(250) PRIMARY KEY DEFAULT 'CT' || LPAD(nextval('seq_categorie_id')::text, 4, '0'),
-    nom VARCHAR(250)
+    nom VARCHAR(250) UNIQUE
 );
+ALTER TABLE Categorie ADD CONSTRAINT uniquee UNIQUE(NOM); 
 
 
 -- Creation de la table CoureurCategorie
@@ -89,3 +90,12 @@ CREATE TABLE RESULTATCSV (
     arrivee timestamp
 );
 -- 
+
+CREATE TABLE REGLEcategoriedtn(
+    id serial PRIMARY KEY,
+    categorie VARCHAR(250),
+    agemin int ,
+    agemax int ,
+    foreign KEY(categorie) REFERENCES categorie(id)
+);
+

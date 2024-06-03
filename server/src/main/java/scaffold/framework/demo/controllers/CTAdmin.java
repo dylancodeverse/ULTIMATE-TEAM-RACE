@@ -218,4 +218,21 @@ public class CTAdmin {
         return "redirect:/admin/importpoint";
     }
 
+    @GetMapping("/generateCategorie")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public String generateCategorie() throws SQLException {
+        Connection connection = dataSource.getConnection();
+        connection.setAutoCommit(false);
+        try {
+
+            connection.createStatement().executeUpdate("delete from categorie;");
+            connection.createStatement().executeUpdate(
+                    "INSERT INTO Categorie (ID,NOM) SELECT Categorie, Categorie FROM categoriecomplet on CONFLICT do NOTHING;");
+        } finally {
+            connection.commit();
+            connection.close();
+        }
+        return "redirect:/home/home";
+    }
+
 }

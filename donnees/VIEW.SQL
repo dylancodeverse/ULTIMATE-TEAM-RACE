@@ -91,3 +91,31 @@ CREATE VIEW etatcompteparetape as
 drop VIEW CLASSEMENTPARETAPEAVECCHRONO ;
 CREATE VIEW CLASSEMENTPARETAPEAVECCHRONO AS
 SELECT classementcrparetape.* , etape.depart ,     arrivee - depart AS chrono from classementcrparetape join etape on classementCRParEtape.etapeid = etape.id ;
+
+
+
+drop view Categoriecompletselonage cascade;
+CREATE VIEW Categoriecompletselonage as
+select 
+    coureur.id ,  
+    case when extract(year from age(coureur.dtn)) <18
+    then 'JUNIOR'
+    ELSE 'SENIOR'
+    END AS categorie
+from coureur ;
+drop VIEW categorieselonsexe cascade;
+CREATE VIEW categorieselonsexe as
+select 
+    coureur.id ,  
+    coureur.genre as categorie 
+
+from coureur ;
+
+drop view categoriecomplet cascade ;
+Create view categoriecomplet as 
+    select * from Categoriecompletselonage union 
+    select * from categorieselonsexe ;
+
+
+
+

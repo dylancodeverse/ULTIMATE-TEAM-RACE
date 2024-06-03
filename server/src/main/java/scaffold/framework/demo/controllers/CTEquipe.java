@@ -117,6 +117,7 @@ public class CTEquipe {
     }
 
     @GetMapping("/homeEquipe")
+    @Auth(classSource = RulesConf.class, rule = "isEquipe")
     public String getPageHome(Model model, HttpServletRequest request) throws Exception {
         Connection connection = dataSource.getConnection();
         connection.setAutoCommit(false);
