@@ -6,5 +6,5 @@ ALTER SEQUENCE seq_categorie_id RESTART WITH 1;
 ALTER SEQUENCE seq_coureurcategorie_id RESTART WITH 1;
 ALTER SEQUENCE seq_etape_id RESTART WITH 1;
 ALTER SEQUENCE seq_resultatetape_id RESTART WITH 1;
-
+ALTER SEQUENCE seq_point_id restart WITH 1;
 

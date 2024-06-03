@@ -4,12 +4,22 @@ import java.sql.Timestamp;
 
 import orm.DynamicORM;
 
-public class CompletResultatEtape extends DynamicORM<CompletResultatEtape> {
+public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
+    Long rang;
     String id;
     Timestamp arrivee;
     String etapenom;
     String coureurnom;
     String equipe;
+    Long points;
+
+    public Long getRang() {
+        return rang;
+    }
+
+    public void setRang(Long rang) {
+        this.rang = rang;
+    }
 
     public String getId() {
         return id;
@@ -49,5 +59,13 @@ public class CompletResultatEtape extends DynamicORM<CompletResultatEtape> {
 
     public void setEquipe(String equipe) {
         this.equipe = equipe;
+    }
+
+    public Long getPoints() {
+        return points;
+    }
+
+    public void setPoints(Long points) {
+        this.points = points;
     }
 }

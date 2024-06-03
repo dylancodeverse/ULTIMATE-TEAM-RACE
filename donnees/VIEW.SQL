@@ -1,7 +1,7 @@
 drop VIEW COMPLETResultatEtape cascade; 
 -- resultat avec libelle complet
 CREATE VIEW COMPLETResultatEtape AS
-SELECT ResultatEtape.ID , ResultatEtape.Depart,
+SELECT ResultatEtape.ID ,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
     Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe
     FROM ResultatEtape 
@@ -15,9 +15,9 @@ SELECT ResultatEtape.ID , ResultatEtape.Depart,
 
 
 
-DROP view classementCR cascade;
+DROP view classementCRParEtape cascade;
 -- classement des coureurs par etape 
-CREATE view classementCR AS
+CREATE view classementCRParEtape AS
 SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) 
 AS rang,
         COMPLETResultatEtape.* , 
@@ -29,9 +29,17 @@ AS rang,
             WHEN DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapenom ORDER BY COMPLETResultatEtape.Arrivee ) =5 THEN 1
             ELSE 0
         END AS POINTS    
-        FROM COMPLETResultatEtape where COMPLETResultatEtape.Arrivee is not null and
-        COMPLETResultatEtape.Depart is not null
+        FROM COMPLETResultatEtape where COMPLETResultatEtape.Arrivee is not null 
         ORDER BY COMPLETResultatEtape.Arrivee;
+
+--  classement general des coureurs etape non prise en compte
+CREATE VIEW classementCR AS
+SELECT DENSE_RANK() OVER (ORDER BY SUM(POINTS)) AS RANG ,
+        CoureurNOM ,
+        EQUIPE ,
+        SUM(POINTS) AS POINTS 
+        FROM classementCRParEtape GROUP BY CoureurNOM, EQUIPE ORDER BY RANG;
+
 
 drop view classementEQ1 cascade;
 -- classement des equipes par etape
@@ -65,7 +73,7 @@ CREATE VIEW CLASSEMENTEQ  AS
     GROUP BY Equipe ORDER by rang ;
     
 drop view etatcompteparetape ;
--- verification des etats de coureur participant a une etape par equipe (complet ou pas)
+-- -- verification des etats de coureur participant a une etape par equipe (complet ou pas)
 CREATE VIEW etatcompteparetape as
     with resultatetapeavecequipe as
     (select resultatetape.etape , resultatetape.Coureur , Coureur.equipe from

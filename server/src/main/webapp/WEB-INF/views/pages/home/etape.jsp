@@ -49,6 +49,7 @@
                             <td>
                             <%= etape.getLongueurKM() %> KM de course
                             <small class="d-block"><%= etape.getNbCoureur() %> coureurs par equipe</small>
+                            <small class="d-block">Depart:<%= etape.getDepart() %> </small>
                             </td>
 
                         </tr>

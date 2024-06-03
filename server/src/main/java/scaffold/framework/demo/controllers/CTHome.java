@@ -10,10 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import scaffold.framework.demo.config.springAuth.annotations.Auth;
 import scaffold.framework.demo.config.springAuth.rules.RulesConf;
 import scaffold.framework.demo.models.course.ClassementCR;
+import scaffold.framework.demo.models.course.ClassementCRparetape;
 import scaffold.framework.demo.models.course.ClassementEQ;
 import scaffold.framework.demo.models.course.Etape;
 
@@ -37,6 +39,20 @@ public class CTHome {
         try {
             model.addAttribute("classements", new ClassementCR().select(connection, false));
             return "pages/home/classementCR";
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
+    }
+
+    @GetMapping("/classementCR/{coureur}")
+    public String getMethodName(@PathVariable String coureur, Model model) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            model.addAttribute("detail",
+                    new ClassementCRparetape().selectWhere(connection, false, "coureurnom='" + coureur + "'"));
+            return "pages/home/classementCRDetail";
         } finally {
             if (!connection.isClosed()) {
                 connection.close();

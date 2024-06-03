@@ -78,12 +78,11 @@ public class CTAdmin {
 
     @PostMapping("/affectation")
     @Auth(classSource = RulesConf.class, rule = "isAdmin")
-    public String affecter(String ID, String depart, String arrivee) throws Exception {
+    public String affecter(String ID, String arrivee) throws Exception {
         Connection connection = dataSource.getConnection();
         try {
             ResultatEtape resultatEtape = new ResultatEtape();
             resultatEtape.setID(ID);
-            resultatEtape.setDepart(depart);
             resultatEtape.setArrivee(arrivee);
             resultatEtape.updateById(connection, false);
             return "redirect:/admin/affectation";

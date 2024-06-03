@@ -1,5 +1,7 @@
 package scaffold.framework.demo.models.course;
 
+import java.sql.Timestamp;
+
 import orm.DynamicORM;
 import orm.annotations.Id;
 
@@ -11,6 +13,7 @@ public class Etape extends DynamicORM<Etape> {
     Double LongueurKM;
     Integer nbCoureur;
     Integer rangEtape;
+    Timestamp depart;
 
     public String getID() {
 
@@ -51,6 +54,14 @@ public class Etape extends DynamicORM<Etape> {
 
     public void setRangEtape(Integer rangEtape) {
         this.rangEtape = rangEtape;
+    }
+
+    public Timestamp getDepart() {
+        return depart;
+    }
+
+    public void setDepart(Timestamp depart) {
+        this.depart = depart;
     }
 
 }

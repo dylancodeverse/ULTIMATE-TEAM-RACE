@@ -1,7 +1,6 @@
 package scaffold.framework.demo.models.course;
 
-import org.postgresql.util.PGInterval;
-
+import java.sql.Timestamp;
 import orm.DynamicORM;
 import orm.annotations.Id;
 
@@ -11,8 +10,15 @@ public class ResultatEtape extends DynamicORM<ResultatEtape> {
     String ID;
     String Etape;
     String Coureur;
-    PGInterval Depart;
-    PGInterval Arrivee;
+    Timestamp Arrivee;
+
+    public Timestamp getArrivee() {
+        return Arrivee;
+    }
+
+    public void setArrivee(Timestamp arrivee) {
+        Arrivee = arrivee;
+    }
 
     public String getID() {
         return ID;
@@ -38,31 +44,8 @@ public class ResultatEtape extends DynamicORM<ResultatEtape> {
         Coureur = coureur;
     }
 
-    public PGInterval getDepart() {
-        return Depart;
-    }
-
-    public void setDepart(PGInterval depart) {
-        Depart = depart;
-    }
-
-    public PGInterval getArrivee() {
-        return Arrivee;
-    }
-
-    public void setArrivee(PGInterval arrivee) {
-        Arrivee = arrivee;
-    }
-
-    public void setDepart(String depart2) {
-        String[] s = depart2.split(":");
-        setDepart(new PGInterval(0, 0, 0, 
-        Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2])));
-    }
-
     public void setArrivee(String arrivee2) {
-        String[] s = arrivee2.split(":");
-        setArrivee(new PGInterval(0, 0, 0, Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2])));
+        setArrivee(Timestamp.valueOf(arrivee2));
     }
 
 }

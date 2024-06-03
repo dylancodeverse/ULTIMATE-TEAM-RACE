@@ -6,12 +6,19 @@ CREATE SEQUENCE seq_categorie_id START 1;
 CREATE SEQUENCE seq_coureurcategorie_id START 1;
 CREATE SEQUENCE seq_etape_id START 1;
 CREATE SEQUENCE seq_resultatetape_id START 1;
+CREATE SEQUENCE seq_point_id start 1;
 
 -- Creation de la table AppUser
 CREATE TABLE AppUser (
     ID VARCHAR(250) PRIMARY KEY DEFAULT 'APP' || LPAD(nextval('seq_appuser_id')::text, 4, '0'),
     login VARCHAR(250),
     pswd VARCHAR(250)
+);
+
+CREATE TABLE POINT(
+    ID VARCHAR(250) PRIMARY KEY DEFAULT 'PT'|| LPAD(nextval('seq_point_id')::text,4,'0'),
+    rang int ,
+    point int
 );
 
 
@@ -56,8 +63,10 @@ CREATE TABLE Etape (
     Nom VARCHAR(250),
     LongueurKM double precision,
     nbCoureur INT,
-    rangEtape INT
+    rangEtape INT,
+    depart timestamp
 );
+
 
 
 -- Creation de la table ResultatEtape
@@ -65,7 +74,6 @@ CREATE TABLE ResultatEtape (
     ID VARCHAR(250) PRIMARY KEY DEFAULT 'RES' || LPAD(nextval('seq_resultatetape_id')::text, 4, '0'),
     Etape VARCHAR(250) REFERENCES Etape(ID),
     Coureur VARCHAR(250) REFERENCES Coureur(ID),
-    Depart INTERVAL,
-    Arrivee INTERVAL
+    Arrivee timestamp
 );
 

@@ -34,13 +34,14 @@
                         <th scope="col">RANG</th>
                         <th scope="col">COUREUR</th>
                         <th scope="col">POINTS</th>
+                        <th scope="col">ETAPE</th>
                         <th scope="col">Details</th>
                       </tr>
                     </thead>
                     <tbody>
 
-                        <% ClassementCR[] classements =(ClassementCR[])(request.getAttribute("classements")) ;
-                        for (ClassementCR classement :classements) { %>
+                        <% ClassementCRparetape[] classements =(ClassementCRparetape[])(request.getAttribute("details")) ;
+                        for (ClassementCRparetape classement :classements) { %>
                         <tr scope="row">
                             <td><%= classement.getRang() %></td>
                             <td>
@@ -48,7 +49,10 @@
                             <small class="d-block">De l'equipe <%= classement.getEquipe() %> </small>
                             </td>
                             <td><%= classement.getPoints() %></td>
-                            <td> <a href="/home/classementCR/<%= classement.getCoureurnom %>"> Voir les details</td>
+                            <td><%= classement.getEtapenom() %></td>
+                            <td>
+                                <small class="d-block">Arrivee: <%= classement.getArrivee() %></small>
+                            </td>
 
                         </tr>
                         <tr class="spacer"><td colspan="100"></td></tr>
