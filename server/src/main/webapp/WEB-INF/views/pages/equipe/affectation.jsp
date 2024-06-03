@@ -27,11 +27,23 @@
                     
                     <div class="row">
                         <label for="" class="label"> Etape :</label>
+                        
                         <select class="input" name="etape" id="">
                             <option value="">Choisir</option>
                             <% Etape[] etapes = (Etape[])(request.getAttribute("etapes"));
                             for(Etape etape : etapes){%>
-                                <option value="<%=etape.getID()%>"><%=etape.getNom() %></option>
+                                <option value="<%=etape.getID()%>"
+                                "
+                                <% 
+                                if (request.getAttribute("selected").toString().equals(etape.getID())){
+                                    out.println("selected");
+                                }else{
+                                    out.println("n");
+                                }
+                                %>
+                                "
+                                
+                                ><%=etape.getNom() %></option>
                             <%}%>
                         </select>
 

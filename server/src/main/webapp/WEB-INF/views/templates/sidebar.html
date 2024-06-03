@@ -4,27 +4,7 @@
         <i class='ti ti-menu-2' id="btn" ></i>
     </div>
     <ul class="nav-list">
-      <li>
-        <a href="/home/home">
-          <i class="ti ti-layout-dashboard"></i>
-          <span class="links_name">Accueil</span>
-        </a>
-         <span class="tooltip">Accueil</span>
-      </li>
-      <li>
-        <a href="/home/classementCR">
-          <i class="ti ti-layout-dashboard"></i>
-          <span class="links_name">Classement Coureur</span>
-        </a>
-         <span class="tooltip">Classement Coureur</span>
-      </li>
-      <li>
-        <a href="/home/classementEQ">
-          <i class="ti ti-layout-dashboard"></i>
-          <span class="links_name">Classement Equipe</span>
-        </a>
-         <span class="tooltip">Classement Equipe</span>
-      </li>
+
 
       <% Integer admin = (Integer)(request.getSession().getAttribute("ISADMIN"));
 
@@ -62,15 +42,45 @@
       }
       else{ %>
         <li>
+          <a href="/equipe/homeEquipe">
+            <i class="ti ti-layout-dashboard"></i>
+            <span class="links_name">Accueil</span>
+          </a>
+           <span class="tooltip">Affectation</span>
+        </li>
+        <li>
           <a href="/equipe/affectation">
             <i class="ti ti-layout-dashboard"></i>
             <span class="links_name">Affectation</span>
           </a>
            <span class="tooltip">Affectation</span>
         </li>
+
+        
       <%  
       }
       %>
+      <li>
+        <a href="/home/home">
+          <i class="ti ti-layout-dashboard"></i>
+          <span class="links_name">Etapes</span>
+        </a>
+         <span class="tooltip">Etapes</span>
+      </li>
+      <li>
+        <a href="/home/classementCR">
+          <i class="ti ti-layout-dashboard"></i>
+          <span class="links_name">Classement Coureur</span>
+        </a>
+         <span class="tooltip">Classement Coureur</span>
+      </li>
+      <li>
+        <a href="/home/classementEQ">
+          <i class="ti ti-layout-dashboard"></i>
+          <span class="links_name">Classement Equipe</span>
+        </a>
+         <span class="tooltip">Classement Equipe</span>
+      </li>
 
 
 

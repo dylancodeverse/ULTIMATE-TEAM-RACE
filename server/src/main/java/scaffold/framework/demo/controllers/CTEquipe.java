@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import scaffold.framework.demo.config.springAuth.annotations.Auth;
@@ -19,6 +21,7 @@ import scaffold.framework.demo.models.course.ResultatEtape;
 import scaffold.framework.demo.models.equipe.Coureur;
 import scaffold.framework.demo.models.equipe.Equipe;
 import scaffold.framework.demo.models.equipe.Etatcompteparetape;
+import scaffold.framework.demo.models.equipe.HomeEquipe;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +51,7 @@ public class CTEquipe {
             HttpSession session = servlet.getSession(true);
             session.setAttribute("USRID", equipes[0].getID());
             session.setAttribute("ISADMIN", 0);
-            return "redirect:/home/home";
+            return "redirect:/equipe/homeEquipe";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "redirect:/equipe/login";
@@ -61,7 +64,8 @@ public class CTEquipe {
 
     @GetMapping("/affectation")
     @Auth(classSource = RulesConf.class, rule = "isEquipe")
-    public String pageAffectation(Model model, HttpServletRequest request) throws Exception {
+    public String pageAffectation(Model model, HttpServletRequest request, @Nullable @RequestParam String etapeid)
+            throws Exception {
         Connection connection = dataSource.getConnection();
         connection.setAutoCommit(false);
         try {
@@ -72,7 +76,13 @@ public class CTEquipe {
             model.addAttribute("coureurs", coureurs);
             // prendre tous les etapes possibles
             Etape[] etapes = new Etape().select(connection, true);
+
             model.addAttribute("etapes", etapes);
+            // manampy selected
+            if (etapeid == null) {
+                etapeid = "null";
+            }
+            model.addAttribute("selected", etapeid);
 
             return "pages/equipe/affectation";
 
@@ -99,6 +109,23 @@ public class CTEquipe {
             resutlatEtape.setCoureur(coureur);
             resutlatEtape.insert(connection, false);
             return "redirect:/equipe/affectation";
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
+    }
+
+    @GetMapping("/homeEquipe")
+    public String getPageHome(Model model, HttpServletRequest request) throws Exception {
+        Connection connection = dataSource.getConnection();
+        connection.setAutoCommit(false);
+        try {
+            HttpSession session = request.getSession();
+            String equipeID = session.getAttribute("USRID").toString();
+            HomeEquipe[] homeEquipes = HomeEquipe.getAllByEquipeID(connection, equipeID);
+            model.addAttribute("homeequipes", homeEquipes);
+            return "pages/home/homeEquipe";
         } finally {
             if (!connection.isClosed()) {
                 connection.close();

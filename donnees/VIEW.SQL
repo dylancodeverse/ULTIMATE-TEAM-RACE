@@ -3,7 +3,7 @@ drop VIEW COMPLETResultatEtape cascade;
 CREATE VIEW COMPLETResultatEtape AS
 SELECT ResultatEtape.ID ,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
-    Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe, etape.id as etapeid
+    Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe, etape.id as etapeid , equipe.id as equipeid
     FROM ResultatEtape 
     JOIN Coureur ON Coureur.ID = ResultatEtape.Coureur
     JOIN Etape ON Etape.ID = ResultatEtape.Etape 
@@ -88,5 +88,6 @@ CREATE VIEW etatcompteparetape as
 
     select nbCoureur=nb as estcomplet , etape ,equipe from columnadded;
 
-
--- CREATE VIEW 
+drop VIEW CLASSEMENTPARETAPEAVECCHRONO ;
+CREATE VIEW CLASSEMENTPARETAPEAVECCHRONO AS
+SELECT classementcrparetape.* , etape.depart ,     arrivee - depart AS chrono from classementcrparetape join etape on classementCRParEtape.etapeid = etape.id ;
