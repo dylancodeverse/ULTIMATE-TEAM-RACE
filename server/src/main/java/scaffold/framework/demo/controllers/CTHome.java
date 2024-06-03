@@ -17,7 +17,11 @@ import scaffold.framework.demo.config.springAuth.rules.RulesConf;
 import scaffold.framework.demo.models.course.ClassementCR;
 import scaffold.framework.demo.models.course.ClassementCRparetape;
 import scaffold.framework.demo.models.course.ClassementEQ;
+import scaffold.framework.demo.models.course.Classementparequipeavecpointparcategorie;
+import scaffold.framework.demo.models.course.Classementparequipetous;
 import scaffold.framework.demo.models.course.Etape;
+
+import io.micrometer.common.lang.Nullable;
 
 @Controller
 @RequestMapping("/home")
@@ -73,6 +77,22 @@ public class CTHome {
             }
         }
 
+    }
+
+    @GetMapping("/classementParCategorie")
+    public String getMethodName(Model model, @Nullable String categorie) throws Exception {
+        Connection connection = dataSource.getConnection();
+
+        Classementparequipeavecpointparcategorie[] cls = null;
+        if (categorie == null) {
+            cls = new Classementparequipetous().select(connection, false);
+
+        } else {
+            cls = new Classementparequipeavecpointparcategorie().selectWhere(connection, false,
+                    "categorie='" + categorie + "'");
+        }
+        model.addAttribute("classement", cls);
+        return "pages/home/classementParCategorie";
     }
 
 }

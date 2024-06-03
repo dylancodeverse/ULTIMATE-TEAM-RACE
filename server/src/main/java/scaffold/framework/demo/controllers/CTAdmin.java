@@ -220,14 +220,18 @@ public class CTAdmin {
 
     @GetMapping("/generateCategorie")
     @Auth(classSource = RulesConf.class, rule = "isAdmin")
-    public String generateCategorie() throws SQLException {
+    public String generateCategorie() throws Exception {
         Connection connection = dataSource.getConnection();
         connection.setAutoCommit(false);
         try {
+            java.sql.Statement s = connection.createStatement();
+            s.executeUpdate("delete from coureurcategorie");
 
-            connection.createStatement().executeUpdate("delete from categorie;");
-            connection.createStatement().executeUpdate(
+            s.executeUpdate("delete from categorie;");
+            s.executeUpdate(
                     "INSERT INTO Categorie (ID,NOM) SELECT Categorie, Categorie FROM categoriecomplet on CONFLICT do NOTHING;");
+            s.executeUpdate(
+                    "insert into coureurcategorie(categorie,coureur) select categorie,id   from categoriecomplet;");
         } finally {
             connection.commit();
             connection.close();

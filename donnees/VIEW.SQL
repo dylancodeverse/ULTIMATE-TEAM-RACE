@@ -3,13 +3,13 @@ drop VIEW COMPLETResultatEtape cascade;
 CREATE VIEW COMPLETResultatEtape AS
 SELECT ResultatEtape.ID ,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
-    Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe, etape.id as etapeid , equipe.id as equipeid
+    Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe, etape.id as etapeid , equipe.id as equipeid ,
+    coureur.id as coureurid 
     FROM ResultatEtape 
     JOIN Coureur ON Coureur.ID = ResultatEtape.Coureur
     JOIN Etape ON Etape.ID = ResultatEtape.Etape 
     JOIN Equipe on Coureur.Equipe = Equipe.ID
     ; 
-
 
 
 
@@ -116,6 +116,54 @@ Create view categoriecomplet as
     select * from Categoriecompletselonage union 
     select * from categorieselonsexe ;
 
+insert into coureurcategorie(categorie,coureur) select categorie,id   from  
+categoriecomplet;
+
+drop VIEW COMPLETResultatEtapecategorie;
+CREATE VIEW COMPLETResultatEtapecategorie as
+select COMPLETResultatEtape.* , coureurcategorie.categorie from COMPLETResultatEtape join coureurcategorie
+on coureurcategorie.coureur =COMPLETResultatEtape.coureurid ;
+
+-- point par categorie
+drop view classementparcrparcategorieselonetape
+create view classementparcrparcategorieselonetape as 
+select 
+DENSE_RANK() OVER (partition by COMPLETResultatEtapecategorie.categorie ,COMPLETResultatEtapecategorie.etapeid  ORDER BY COMPLETResultatEtapecategorie.Arrivee ) as rank
+,COMPLETResultatEtapecategorie.* from COMPLETResultatEtapecategorie 
+        where COMPLETResultatEtapecategorie.Arrivee is not null
+                ORDER BY COMPLETResultatEtapecategorie.Arrivee;
+
+
+-- 
+drop view classementparequipeavecpointparcategorie cascade;
+create view classementparequipeavecpointparcategorie as 
+with classementAvecPointParCoureurParCategorie as
+(select classementparcrparcategorieselonetape.*, point.point  from classementparcrparcategorieselonetape
+left JOIN POINT ON POINT.RANK = classementparcrparcategorieselonetape.rank ORDER BY Arrivee ) ,
+classementequipeavecpoint as
+(select classementAvecPointParCoureurParCategorie.equipe , categorie , sum(point ) as point from classementAvecPointParCoureurParCategorie GROUP by 
+classementAvecPointParCoureurParCategorie.equipe , categorie order by categorie)
+select DENSE_RANK() over(partition by classementequipeavecpoint.categorie order by point desc ) as rank , 
+classementequipeavecpoint.equipe ,
+classementequipeavecpoint.categorie,
+classementequipeavecpoint.point
+from classementequipeavecpoint
+;
+drop view Classementparequipetous;
+create view Classementparequipetous as 
+with classementequipeavecpoint as
+(select   equipe ,sum( point) as point from 
+classementparequipeavecpointparcategorie GROUP by  equipe   )
+select DENSE_RANK() over(order by classementequipeavecpoint.point desc) as rank ,classementequipeavecpoint.* ,
+'tous' as categorie
+from classementequipeavecpoint
+;
 
 
 
+-- alaina fotsiny ny homme
+-- with
+-- filtrehomme as
+--  (select * from COMPLETResultatEtapecategorie where categorie='M')
+--  select DENSE_RANK() OVER(partition by filtrehomme.etapeid order by filtrehomme.arrivee) as rang 
+--  , filtrehomme.* from filtrehomme;

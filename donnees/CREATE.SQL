@@ -44,15 +44,14 @@ CREATE TABLE Coureur (
 
 -- Creation de la table Categorie
 CREATE TABLE Categorie (
-    ID VARCHAR(250) PRIMARY KEY DEFAULT 'CT' || LPAD(nextval('seq_categorie_id')::text, 4, '0'),
+    ID VARCHAR(250) PRIMARY KEY DEFAULT 'CT' || LPAD(nextval('seq_categorie_id')::text, 8, '0'),
     nom VARCHAR(250) UNIQUE
 );
-ALTER TABLE Categorie ADD CONSTRAINT uniquee UNIQUE(NOM); 
 
 
 -- Creation de la table CoureurCategorie
 CREATE TABLE CoureurCategorie (
-    ID VARCHAR(250) PRIMARY KEY DEFAULT 'CRCT' || LPAD(nextval('seq_coureurcategorie_id')::text, 4, '0'),
+    ID VARCHAR(250) PRIMARY KEY DEFAULT 'CRCT' || LPAD(nextval('seq_coureurcategorie_id')::text, 8, '0'),
     Categorie VARCHAR(250) REFERENCES Categorie(ID),
     Coureur VARCHAR(250) REFERENCES Coureur(ID)
 );
