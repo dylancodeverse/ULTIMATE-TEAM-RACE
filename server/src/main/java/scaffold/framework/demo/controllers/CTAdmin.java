@@ -1,6 +1,7 @@
 package scaffold.framework.demo.controllers;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -66,7 +67,7 @@ public class CTAdmin {
         Connection connection = dataSource.getConnection();
         try {
             CompletResultatEtape[] completResultatEtapes = new CompletResultatEtape()
-                    .selectWhere(connection, false, "depart is null or arrivee is null");
+                    .selectWhere(connection, false, "arrivee is null");
             model.addAttribute("completResultatEtapes", completResultatEtapes);
             return "/pages/admin/affectation";
         } finally {
@@ -78,12 +79,12 @@ public class CTAdmin {
 
     @PostMapping("/affectation")
     @Auth(classSource = RulesConf.class, rule = "isAdmin")
-    public String affecter(String ID, String arrivee) throws Exception {
+    public String affecter(String ID, String arrivee, Date date) throws Exception {
         Connection connection = dataSource.getConnection();
         try {
             ResultatEtape resultatEtape = new ResultatEtape();
             resultatEtape.setID(ID);
-            resultatEtape.setArrivee(arrivee);
+            resultatEtape.setArrivee(date.toString() + " " + arrivee);
             resultatEtape.updateById(connection, false);
             return "redirect:/admin/affectation";
         } finally {

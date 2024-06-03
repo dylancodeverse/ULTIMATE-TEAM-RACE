@@ -29,7 +29,7 @@ AS rang,
 
 DROP view classementCRParEtape cascade;
 CREATE view classementCRParEtape AS
-    select classementCRParEtape0.*, coalesce(point.rank,0) as point from classementCRParEtape0
+    select classementCRParEtape0.*, coalesce(point.point,0) as point from classementCRParEtape0
         left JOIN POINT ON POINT.RANK =RANG ORDER BY Arrivee;
 
 

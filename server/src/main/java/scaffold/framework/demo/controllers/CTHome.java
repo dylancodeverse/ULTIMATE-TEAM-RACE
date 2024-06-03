@@ -50,7 +50,8 @@ public class CTHome {
     public String getMethodName(@PathVariable String coureur, Model model) throws Exception {
         Connection connection = dataSource.getConnection();
         try {
-            model.addAttribute("detail",
+
+            model.addAttribute("details",
                     new ClassementCRparetape().selectWhere(connection, false, "coureurnom='" + coureur + "'"));
             return "pages/home/classementCRDetail";
         } finally {

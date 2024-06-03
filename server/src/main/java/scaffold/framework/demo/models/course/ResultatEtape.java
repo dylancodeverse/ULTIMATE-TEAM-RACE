@@ -45,7 +45,7 @@ public class ResultatEtape extends DynamicORM<ResultatEtape> {
     }
 
     public void setArrivee(String arrivee2) {
-        setArrivee(Timestamp.valueOf(arrivee2));
+        setArrivee(Timestamp.valueOf(arrivee2.trim()));
     }
 
 }

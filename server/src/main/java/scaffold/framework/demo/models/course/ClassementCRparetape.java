@@ -11,7 +11,7 @@ public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
     String etapenom;
     String coureurnom;
     String equipe;
-    Long points;
+    Integer point;
 
     public Long getRang() {
         return rang;
@@ -61,11 +61,11 @@ public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
         this.equipe = equipe;
     }
 
-    public Long getPoints() {
-        return points;
+    public Integer getPoint() {
+        return point;
     }
 
-    public void setPoints(Long points) {
-        this.points = points;
+    public void setPoint(Integer point) {
+        this.point = point;
     }
 }

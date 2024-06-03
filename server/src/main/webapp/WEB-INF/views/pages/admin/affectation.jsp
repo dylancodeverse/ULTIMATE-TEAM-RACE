@@ -35,7 +35,10 @@
                             <%}%>
                         </select>
                     </div>
-
+                    <div class="row">
+                        <label for="" class="label"> Date arrivee:</label>
+                        <input name="date" type="date">                        
+                    </div>
                     <div class="row">
                         <label for="" class="label"> Heure d'arrivee:</label>
                         <input name="arrivee" pattern="[0-9]+:[0-9]{2}:[0-9]{2}$">

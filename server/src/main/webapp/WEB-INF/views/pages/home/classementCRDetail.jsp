@@ -48,7 +48,7 @@
                             <%= classement.getCoureurnom() %>
                             <small class="d-block">De l'equipe <%= classement.getEquipe() %> </small>
                             </td>
-                            <td><%= classement.getPoints() %></td>
+                            <td><%= classement.getPoint() %></td>
                             <td><%= classement.getEtapenom() %></td>
                             <td>
                                 <small class="d-block">Arrivee: <%= classement.getArrivee() %></small>

@@ -48,7 +48,7 @@
                             <small class="d-block">De l'equipe <%= classement.getEquipe() %> </small>
                             </td>
                             <td><%= classement.getPoints() %></td>
-                            <td> <a href="/home/classementCR/<%= classement.getCoureurnom %>"> Voir les details</td>
+                            <td> <a href="/home/classementCR/<%= classement.getCoureurnom() %>"> Voir les details</td>
 
                         </tr>
                         <tr class="spacer"><td colspan="100"></td></tr>
