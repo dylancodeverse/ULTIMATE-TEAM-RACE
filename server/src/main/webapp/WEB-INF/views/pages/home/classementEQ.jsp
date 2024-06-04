@@ -21,9 +21,8 @@
         <div class="container">
             <header class="hero">
                 <h2>Liste des classements de la course</h2>
-                <form class="prediction-form"  method="get">
-                    <label> Generer PDF pour 1ere place</label>
-                    <button type="submit">Valider</button>
+                <form class="prediction-form"  method="GET" action="/admin/classementGeneralgeneratePDF">
+                    <button type="submit"> Generer PDF pour 1ere place</button>
                 </form>
             </header>
             <section class="resources">

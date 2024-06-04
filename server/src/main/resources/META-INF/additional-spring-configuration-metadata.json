@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "tmp.path",
-  "type": "java.lang.String",
-  "description": "A description for 'tmp.path'"
-}]}
+{"properties": [
+  {
+    "name": "tmp.path",
+    "type": "java.lang.String",
+    "description": "A description for 'tmp.path'"
+  },
+  {
+    "name": "tempFile",
+    "type": "java.lang.String",
+    "description": "A description for 'tempFile'"
+  }
+]}

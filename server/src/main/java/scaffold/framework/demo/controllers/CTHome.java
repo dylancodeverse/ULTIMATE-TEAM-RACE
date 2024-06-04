@@ -26,7 +26,6 @@ import scaffold.framework.demo.models.course.Etape;
 import io.micrometer.common.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @Controller
 @RequestMapping("/home")
 public class CTHome {
@@ -98,6 +97,7 @@ public class CTHome {
                     "categorie='" + categorie + "'");
         }
         model.addAttribute("classement", cls);
+        model.addAttribute("categorie", categorie);
         model.addAttribute("chart", Classementparequipeavecpointparcategorie.getJSONPieChartInformation(cls));
         return "pages/home/classementParCategorie";
     }

@@ -25,10 +25,13 @@
                     <input type="prediction" name="categorie" placeholder="Filtrer">
                     <button type="submit">Voir le resultat</button>
                 </form>
-                <form class="prediction-form"  method="get">
-                <label> Generer PDF pour 1ere place</label>
-                <button type="submit">Valider</button>
-            </form>
+                <form class="prediction-form"  method="get" action="/admin/classementParCategoriegeneratePDF">
+                  <% if(request.getAttribute("classement")!=null){%>
+
+                  <input type="hidden" value="<%= request.getAttribute("categorie")%>">
+                  <button type="submit"> Generer PDF pour 1ere place</button>
+                  <%}%>
+                </form>
             </header>
             <section class="resources">
               <div class="table-responsive custom-table-responsive">
