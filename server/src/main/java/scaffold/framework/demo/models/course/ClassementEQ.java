@@ -2,7 +2,7 @@ package scaffold.framework.demo.models.course;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-
+import java.time.LocalDate;
 import java.util.Random;
 
 import org.json.JSONArray;
@@ -18,8 +18,10 @@ public class ClassementEQ extends DynamicORM<ClassementEQ> {
     public byte[] generatePDFSelonPlace(Connection connection, String fileTemplate, String condition) throws Exception {
 
         ClassementEQ cls = selectWhere(connection, true, "rang=1")[0];
-        return PdfGenerator.generatePdfFromHtml(fileTemplate, new String[] { "equipe" },
-                new String[] { cls.getEquipe() });
+        return PdfGenerator.generatePdfFromHtml(fileTemplate,
+                new String[] { "[Nom du Vainqueur]", "[Date de l'Événement]" },
+
+                new String[] { cls.getEquipe(), LocalDate.now().toString() });
     }
 
     public static String[] getJSONPieChartInformation(ClassementEQ[] fs) throws Exception {
