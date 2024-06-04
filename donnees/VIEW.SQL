@@ -1,15 +1,28 @@
-drop VIEW COMPLETResultatEtape cascade; 
--- resultat avec libelle complet
-CREATE VIEW COMPLETResultatEtape AS
+drop view COMPLETResultatEtapeSansPenalite cascade;
+-- sans penalite
+create view  COMPLETResultatEtapeSansPenalite as
 SELECT ResultatEtape.ID ,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
     Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe, etape.id as etapeid , equipe.id as equipeid ,
-    coureur.id as coureurid , Etape.depart as depart , ResultatEtape.Arrivee - Etape.depart as chrono
+    coureur.id as coureurid , Etape.depart as depart 
     FROM ResultatEtape 
     JOIN Coureur ON Coureur.ID = ResultatEtape.Coureur
     JOIN Etape ON Etape.ID = ResultatEtape.Etape 
     JOIN Equipe on Coureur.Equipe = Equipe.ID
     ; 
+
+drop view penalitesomme
+-- somme des penalites
+create view penalitesomme as 
+select  etape  , equipe , sum( tempspenalite)   as tempspenalite from penalite GROUP by etape,equipe ;
+
+drop VIEW COMPLETResultatEtape cascade; 
+-- resultat avec libelle complet avec penalite
+CREATE VIEW COMPLETResultatEtape AS
+select
+COMPLETResultatEtapeSansPenalite.* , COMPLETResultatEtapeSansPenalite.arrivee - COMPLETResultatEtapeSansPenalite.depart +
+coalesce(penalitesomme.tempspenalite,'00:00:00') as chrono from COMPLETResultatEtapeSansPenalite left join penalitesomme on penalitesomme.etape =COMPLETResultatEtapeSansPenalite.etapeid and 
+penalitesomme.equipe = COMPLETResultatEtapeSansPenalite.equipeid ;
 
 
 

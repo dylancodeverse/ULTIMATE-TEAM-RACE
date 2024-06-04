@@ -12,14 +12,27 @@
 		</conditionalStyle>
 	</style>
 	<parameter name="Parameter1" class="java.lang.String"/>
+	<parameter name="Winner" class="java.lang.String"/>
+	<parameter name="Parameter2" class="java.lang.String"/>
+	<parameter name="Parameter3" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="Field_1" class="java.lang.String"/>
 	<background>
-		<band height="32" splitType="Stretch">
+		<band height="32" splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="138" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="759" height="32" forecolor="#000000" backcolor="#075F8F" uuid="b0c895f6-6dbd-477d-9858-9ad66af087e1"/>
+				<reportElement mode="Opaque" x="0" y="0" width="759" height="66" backcolor="#4998BF" uuid="d8d9e644-3a32-491d-97cb-a277aff17133"/>
+				<textField>
+					<reportElement x="348" y="30" width="100" height="30" uuid="29a309eb-079b-4163-809d-c327b9ca22bd"/>
+					<textFieldExpression><![CDATA[$P{Parameter3}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="10" y="101" width="759" height="32" forecolor="#000000" backcolor="#075F8F" uuid="b0c895f6-6dbd-477d-9858-9ad66af087e1"/>
 				<textField pattern="EEEEE dd MMMMM yyyy">
 					<reportElement x="553" y="12" width="144" height="20" forecolor="#FFFFFF" uuid="a33fce3b-20c1-4696-873a-fe134d1e7d88"/>
 					<textElement textAlignment="Right">
@@ -29,47 +42,12 @@
 				</textField>
 			</frame>
 		</band>
-	</background>
-	<title>
-		<band height="102" splitType="Stretch">
-			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="759" height="66" backcolor="#4998BF" uuid="d8d9e644-3a32-491d-97cb-a277aff17133"/>
-				<textField>
-					<reportElement x="0" y="70" width="759" height="30" forecolor="#25359C" uuid="27b6687f-ef51-4c23-b5eb-7148b0094f91"/>
-					<textElement textAlignment="Center">
-						<font size="20"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{Winner}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement style="SubTitle" x="370" y="37" width="316" height="29" forecolor="#FFFFFF" uuid="cfa21334-0634-4605-9ea7-aca4981f67e4"/>
-					<textElement textAlignment="Right" markup="">
-						<font size="22" isBold="false"/>
-					</textElement>
-					<text><![CDATA[1ST PLACE]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="220" y="20" width="280" height="30" forecolor="#E6EEF0" uuid="f61847a0-eeaa-483f-817c-699280a61653">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Center">
-						<font size="20"/>
-					</textElement>
-					<textFieldExpression><![CDATA[CERTIFICAT DE VAINQUEUR]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="0" y="110" width="759" height="30" uuid="440a29c5-cbf6-4cd7-8e7a-914f4b69da81"/>
-					<textElement textAlignment="Center"/>
-					<textFieldExpression><![CDATA[a terminé la course en première place avec une performance exceptionnelle.]]></textFieldExpression>
-				</textField>
-			</frame>
-		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="30" splitType="Stretch"/>
+		<band height="53" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">

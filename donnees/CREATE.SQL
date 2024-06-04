@@ -17,8 +17,8 @@ CREATE TABLE AppUser (
 
 CREATE TABLE POINT(
     ID VARCHAR(250) PRIMARY KEY DEFAULT 'PT'|| LPAD(nextval('seq_point_id')::text,4,'0'),
-    ranK int ,
-    point int
+    ranK int UNIQUE NOT NULL,
+    point int NOT NULL
 );
 
 
@@ -34,18 +34,19 @@ CREATE TABLE Equipe (
 -- Creation de la table Coureur
 CREATE TABLE Coureur (
     ID VARCHAR(250) PRIMARY KEY DEFAULT 'CR' || LPAD(nextval('seq_coureur_id')::text, 4, '0'),
-    nom VARCHAR(250),
-    numerodossard INT,
-    genre VARCHAR(250),
+    nom VARCHAR(250) NOT NULL,
+    numerodossard INT NOT NULL,
+    genre VARCHAR(250) ,
     dtn DATE,
-    Equipe VARCHAR(250) REFERENCES Equipe(ID)
+    Equipe VARCHAR(250) REFERENCES Equipe(ID),
+    constraint uniquecoureur UNIQUE(Equipe,numerodossard)
 );
 
 
 -- Creation de la table Categorie
 CREATE TABLE Categorie (
     ID VARCHAR(250) PRIMARY KEY DEFAULT 'CT' || LPAD(nextval('seq_categorie_id')::text, 8, '0'),
-    nom VARCHAR(250) UNIQUE
+    nom VARCHAR(250) UNIQUE NOT NULL
 );
 
 

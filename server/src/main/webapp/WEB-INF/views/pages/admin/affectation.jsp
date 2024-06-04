@@ -31,7 +31,7 @@
                             <option value="">Choisir</option>
                             <% CompletResultatEtape[] etapes = (CompletResultatEtape[])(request.getAttribute("completResultatEtapes"));
                             for(CompletResultatEtape etape : etapes){%>
-                                <option value="<%=etape.getId()%>"><%= etape.getCoureurnom() %> de l'equipe <%= etape.getEquipe() %> sur <%= etape.getEtapenom() %></option>
+                                <option value="<%=etape.getId()%>"><%= etape.getCoureurnom() %> de l'equipe <%= etape.getEquipe() %> sur <%= etape.getEtapenom() %> du rang <%= etape.getEtapenom() %></option>
                             <%}%>
                         </select>
                     </div>
