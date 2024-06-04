@@ -4,7 +4,7 @@ CREATE VIEW COMPLETResultatEtape AS
 SELECT ResultatEtape.ID ,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
     Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe, etape.id as etapeid , equipe.id as equipeid ,
-    coureur.id as coureurid 
+    coureur.id as coureurid , Etape.depart as depart , ResultatEtape.Arrivee - Etape.depart as chrono
     FROM ResultatEtape 
     JOIN Coureur ON Coureur.ID = ResultatEtape.Coureur
     JOIN Etape ON Etape.ID = ResultatEtape.Etape 
@@ -18,19 +18,19 @@ SELECT ResultatEtape.ID ,
 DROP view classementCRParEtape0 cascade;
 -- classement des coureurs par etape 
 CREATE view classementCRParEtape0 AS
-SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapeid ORDER BY COMPLETResultatEtape.Arrivee ) 
+SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapeid ORDER BY COMPLETResultatEtape.chrono ) 
 AS rang,
         COMPLETResultatEtape.* 
         
         FROM COMPLETResultatEtape  
                  
         where COMPLETResultatEtape.Arrivee is not null
-        ORDER BY COMPLETResultatEtape.Arrivee;
+        ORDER BY COMPLETResultatEtape.chrono;
 
 DROP view classementCRParEtape cascade;
 CREATE view classementCRParEtape AS
     select classementCRParEtape0.*, coalesce(point.point,0) as point from classementCRParEtape0
-        left JOIN POINT ON POINT.RANK =RANG ORDER BY Arrivee;
+        left JOIN POINT ON POINT.RANK =RANG ;
 
 
 --  classement general des coureurs etape non prise en compte
@@ -90,7 +90,7 @@ CREATE VIEW etatcompteparetape as
 
 drop VIEW CLASSEMENTPARETAPEAVECCHRONO cascade;
 CREATE VIEW CLASSEMENTPARETAPEAVECCHRONO AS
-SELECT classementcrparetape.* , etape.depart ,     arrivee - depart AS chrono from classementcrparetape join etape on classementCRParEtape.etapeid = etape.id ;
+SELECT classementcrparetape.*  from classementcrparetape  ;
 
 
 
@@ -115,8 +115,7 @@ Create view categoriecomplet as
     select * from Categoriecompletselonage union 
     select * from categorieselonsexe ;
 
-insert into coureurcategorie(categorie,coureur) select categorie,id   from  
-categoriecomplet;
+-- categoriecomplet;
 
 drop VIEW COMPLETResultatEtapecategorie cascade;
 CREATE VIEW COMPLETResultatEtapecategorie as
@@ -127,10 +126,10 @@ on coureurcategorie.coureur =COMPLETResultatEtape.coureurid ;
 drop view classementparcrparcategorieselonetape cascade;
 create view classementparcrparcategorieselonetape as 
 select 
-DENSE_RANK() OVER (partition by COMPLETResultatEtapecategorie.categorie ,COMPLETResultatEtapecategorie.etapeid  ORDER BY COMPLETResultatEtapecategorie.Arrivee ) as rank
+DENSE_RANK() OVER (partition by COMPLETResultatEtapecategorie.categorie ,COMPLETResultatEtapecategorie.etapeid  ORDER BY COMPLETResultatEtapecategorie.chrono ) as rank
 ,COMPLETResultatEtapecategorie.* from COMPLETResultatEtapecategorie 
         where COMPLETResultatEtapecategorie.Arrivee is not null
-                ORDER BY COMPLETResultatEtapecategorie.Arrivee;
+                ORDER BY COMPLETResultatEtapecategorie.chrono;
 
 
 -- 
@@ -138,7 +137,7 @@ drop view classementparequipeavecpointparcategorie cascade;
 create view classementparequipeavecpointparcategorie as 
 with classementAvecPointParCoureurParCategorie as
 (select classementparcrparcategorieselonetape.*, point.point  from classementparcrparcategorieselonetape
-left JOIN POINT ON POINT.RANK = classementparcrparcategorieselonetape.rank ORDER BY Arrivee ) ,
+left JOIN POINT ON POINT.RANK = classementparcrparcategorieselonetape.rank ORDER BY chrono ) ,
 classementequipeavecpoint as
 (select classementAvecPointParCoureurParCategorie.equipe , categorie , sum(point ) as point from classementAvecPointParCoureurParCategorie GROUP by 
 classementAvecPointParCoureurParCategorie.equipe , categorie order by categorie)
@@ -170,15 +169,18 @@ from classementequipeavecpoint
 
 
 --view manisy nom n etape s n nom equipe 
-
+drop view  getPenaltiesWithName cascade;
 create view getPenaltiesWithName as 
 select penalite.*, etape.nom as nometape 
 from etape 
 join 
 penalite on penalite.etape=etape.id;
 
+drop view getPenaliteAll cascade;
 create view getPenaliteAll as 
 select getPenaltiesWithName.Id, getPenaltiesWithName.nometape as etapes, equipe.nom as equipes,getPenaltiesWithName.tempspenalite as temps 
 from equipe 
 join getPenaltiesWithName 
 on getPenaltiesWithName.equipe=equipe.id;
+
+
