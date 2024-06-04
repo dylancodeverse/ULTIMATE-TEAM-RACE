@@ -98,3 +98,12 @@ CREATE TABLE REGLEcategoriedtn(
     foreign KEY(categorie) REFERENCES categorie(id)
 );
 
+create table penalite(
+    id serial primary key,
+    etape VARCHAR(250),
+    equipe VARCHAR(250),
+    tempspenalite time,
+    foreign key(etape) REFERENCES etape(id),
+    foreign key(equipe) REFERENCES equipe(id)
+);
+

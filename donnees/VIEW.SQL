@@ -166,3 +166,19 @@ from classementequipeavecpoint
 --  (select * from COMPLETResultatEtapecategorie where categorie='M')
 --  select DENSE_RANK() OVER(partition by filtrehomme.etapeid order by filtrehomme.arrivee) as rang 
 --  , filtrehomme.* from filtrehomme;
+
+
+
+--view manisy nom n etape s n nom equipe 
+
+create view getPenaltiesWithName as 
+select penalite.*, etape.nom as nometape 
+from etape 
+join 
+penalite on penalite.etape=etape.id;
+
+create view getPenaliteAll as 
+select getPenaltiesWithName.Id, getPenaltiesWithName.nometape as etapes, equipe.nom as equipes,getPenaltiesWithName.tempspenalite as temps 
+from equipe 
+join getPenaltiesWithName 
+on getPenaltiesWithName.equipe=equipe.id;

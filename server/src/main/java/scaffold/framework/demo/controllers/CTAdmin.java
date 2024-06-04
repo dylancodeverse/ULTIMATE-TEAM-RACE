@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +37,10 @@ import scaffold.framework.demo.models.course.ClassementEQ;
 import scaffold.framework.demo.models.course.Classementparequipeavecpointparcategorie;
 import scaffold.framework.demo.models.course.CompletResultatEtape;
 import scaffold.framework.demo.models.course.ResultatEtape;
+import scaffold.framework.demo.models.equipe.Equipe;
 import scaffold.framework.demo.models.course.Etape;
+import scaffold.framework.demo.models.course.GetPenaliteAll;
+import scaffold.framework.demo.models.course.Penalite;
 import scaffold.framework.demo.models.imports.Point;
 import scaffold.framework.demo.models.imports.ResultatCSV;
 
@@ -286,6 +290,71 @@ public class CTAdmin {
                 connection.close();
             }
         }
+    }
+
+    @GetMapping("/allPenalites")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public String getAllPenalties(Model model) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            GetPenaliteAll[] penalites = new GetPenaliteAll().select(connection, false);
+            model.addAttribute("allPenalites", penalites);
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
+        return "pages/admin/allPenalites";
+    }
+
+    @PostMapping("/deletePenalite/{id}")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public String deletePenalite(@PathVariable String id) throws Exception {
+        Connection con = dataSource.getConnection();
+        new Penalite().deleteWhere(con, false, "id='" + id + "'");
+
+        return "redirect:/admin/allPenalites";
+    }
+
+    @GetMapping("/penalite")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public String putPenalite(Model model) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            Etape[] etapes = new Etape().select(connection, true);
+            Equipe[] equipes = new Equipe().select(connection, true);
+
+            model.addAttribute("etapes", etapes);
+            model.addAttribute("equipes", equipes);
+
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
+
+        return "pages/admin/penalite";
+
+    }
+
+    @PostMapping("/penalite")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public String insertPenalite(String etape, String equipe, String penalite) throws Exception {
+        Connection con = dataSource.getConnection();
+        try {
+            Penalite penalite2 = new Penalite();
+            penalite2.setEquipe(equipe);
+            penalite2.setEtape(etape);
+            penalite2.setTempspenalite(penalite);
+            penalite2.insert(con, true);
+
+        } finally {
+            con.commit();
+            con.close();
+        }
+
+        return "redirect:pages/admin/penalite";
+
     }
 
 }

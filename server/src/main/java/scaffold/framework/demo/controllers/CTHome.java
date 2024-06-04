@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +22,6 @@ import scaffold.framework.demo.models.course.Classementparequipetous;
 import scaffold.framework.demo.models.course.Etape;
 
 import io.micrometer.common.lang.Nullable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/home")
