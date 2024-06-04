@@ -1,9 +1,18 @@
 package scaffold.framework.demo.models.course;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.json.JSONArray;
+
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 
 import orm.DynamicORM;
 
@@ -11,6 +20,35 @@ public class ClassementEQ extends DynamicORM<ClassementEQ> {
     Long rang;
     String equipe;
     Integer points;
+
+    public byte[] generatePDFSelonPlace(Connection connection, String fileTemplate, String condition) throws Exception {
+
+        ClassementEQ cls = selectWhere(connection, true, "rang=1")[0];
+        JasperReport jasperReport = JasperCompileManager.compileReport(fileTemplate);
+        Map<String, Object> mpas = new HashMap<>();
+        mpas.put("Winner", "EQUIPE :" + cls.getEquipe());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, mpas);
+        return JasperExportManager.exportReportToPdf(jasperPrint);
+
+        // JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, mpas,
+        // dataSource);
+        // V_devistotalsanselevation devis = new
+        // V_devistotalsanselevation().selectWhere(connection, true,
+        // "commandemere='" + idcommande + "'")[0];
+        // String fileTemplate =
+        // "C:/Users/MISA/Desktop/Workspace/S6/ConstructionBTP/spring-server/src/main/resources/static/Devis.jrxml";
+        // JRBeanArrayDataSource dataSource = new
+        // JRBeanArrayDataSource(select(connection, true));
+        // JasperReport jasperReport = JasperCompileManager.compileReport(fileTemplate);
+        // Map<String, Object> mpas = new HashMap<>();
+        // mpas.put("Montant total", "Montant total :" + devis.getMontant().toString() +
+        // " AR");
+        // JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, mpas,
+        // dataSource);
+
+        // return JasperExportManager.exportReportToPdf(jasperPrint);
+
+    }
 
     public static String[] getJSONPieChartInformation(ClassementEQ[] fs) throws Exception {
         return new String[] { ClassementEQ.getJSONDATA(fs), ClassementEQ.getColor(fs), ClassementEQ.getLabel(fs) };

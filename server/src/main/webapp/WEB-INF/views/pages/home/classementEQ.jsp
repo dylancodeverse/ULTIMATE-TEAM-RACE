@@ -21,9 +21,9 @@
         <div class="container">
             <header class="hero">
                 <h2>Liste des classements de la course</h2>
-                <form class="prediction-form"  method="post">
-                    <input type="prediction" name="prediction" placeholder="Recherche">
-                    <button type="submit">Voir le resultat</button>
+                <form class="prediction-form"  method="get">
+                    <label> Generer PDF pour 1ere place</label>
+                    <button type="submit">Valider</button>
                 </form>
             </header>
             <section class="resources">
@@ -63,10 +63,13 @@
 
     <%@ include file="../../templates/script.html" %>
     <script>
-    // Données pour le graphique
-    var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-    var yValues = [55, 49, 44, 24, 15];
-    var barColors = ["red", "green", "blue", "orange", "brown"];
+      // Données pour le graphique
+      <% String[] chartInf = (String[])(request.getAttribute("chart")); %>
+      var xValues = <%= chartInf[2] %>
+      var yValues = <%= chartInf[0] %>;
+      var barColors = <%= chartInf[1] %>;
+      
+
 
     // Initialisation du graphique
     new Chart("myChart", {

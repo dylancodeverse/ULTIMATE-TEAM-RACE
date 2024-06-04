@@ -1,10 +1,18 @@
 package scaffold.framework.demo.models.course;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.json.JSONArray;
 
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import orm.DynamicORM;
 
 public class Classementparequipeavecpointparcategorie extends DynamicORM<Classementparequipeavecpointparcategorie> {
@@ -12,6 +20,17 @@ public class Classementparequipeavecpointparcategorie extends DynamicORM<Classem
     String equipe;
     String categorie;
     Long point;
+
+    public byte[] generatePDFSelonPlace(Connection connection, String fileTemplate, String condition) throws Exception {
+
+        Classementparequipeavecpointparcategorie cls = selectWhere(connection, true, "rang=1")[0];
+        JasperReport jasperReport = JasperCompileManager.compileReport(fileTemplate);
+        Map<String, Object> mpas = new HashMap<>();
+        mpas.put("Winner", "EQUIPE :" + cls.getEquipe());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, mpas);
+        return JasperExportManager.exportReportToPdf(jasperPrint);
+        // JRBeanArrayDataSource dataSource = new
+    }
 
     public static String[] getJSONPieChartInformation(Classementparequipeavecpointparcategorie[] fs) throws Exception {
         return new String[] { getJSONDATA(fs), getColor(fs), getLabel(fs) };

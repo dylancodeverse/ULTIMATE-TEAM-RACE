@@ -11,9 +11,15 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +33,8 @@ import jakarta.servlet.http.HttpSession;
 import scaffold.framework.demo.config.springAuth.annotations.Auth;
 import scaffold.framework.demo.config.springAuth.rules.RulesConf;
 import scaffold.framework.demo.models.AppUser;
+import scaffold.framework.demo.models.course.ClassementEQ;
+import scaffold.framework.demo.models.course.Classementparequipeavecpointparcategorie;
 import scaffold.framework.demo.models.course.CompletResultatEtape;
 import scaffold.framework.demo.models.course.ResultatEtape;
 import scaffold.framework.demo.models.course.Etape;
@@ -36,6 +44,9 @@ import scaffold.framework.demo.models.imports.ResultatCSV;
 @Controller
 @RequestMapping("/admin")
 public class CTAdmin {
+
+    @Value("${tempFile}")
+    String tempFile;
 
     @Autowired
     DataSource dataSource;
@@ -237,6 +248,45 @@ public class CTAdmin {
             connection.close();
         }
         return "redirect:/home/home";
+    }
+
+    @GetMapping("/classementGeneralgeneratePDF")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public ResponseEntity<byte[]> classementGeneralgeneratePDF() throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            byte[] pdfContent = new ClassementEQ().generatePDFSelonPlace(connection, tempFile, "rang=1");
+            // Créer les en-têtes de la réponse
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            // Nom du fichier PDF téléchargé
+            headers.setContentDispositionFormData("filename", "example.pdf");
+            return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
+    }
+
+    @GetMapping("/classementParCategoriegeneratePDF")
+    @Auth(classSource = RulesConf.class, rule = "isAdmin")
+    public ResponseEntity<byte[]> classementParCategorie(String categorie) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            byte[] pdfContent = new Classementparequipeavecpointparcategorie().generatePDFSelonPlace(connection,
+                    tempFile, "rang=1 and categorie='" + categorie.trim() + "'");
+            // Créer les en-têtes de la réponse
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            // Nom du fichier PDF téléchargé
+            headers.setContentDispositionFormData("filename", "example.pdf");
+            return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
     }
 
 }
