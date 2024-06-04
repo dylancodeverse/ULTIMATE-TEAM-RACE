@@ -88,7 +88,7 @@ CREATE VIEW etatcompteparetape as
 
     select nbCoureur=nb as estcomplet , etape ,equipe from columnadded;
 
-drop VIEW CLASSEMENTPARETAPEAVECCHRONO ;
+drop VIEW CLASSEMENTPARETAPEAVECCHRONO cascade;
 CREATE VIEW CLASSEMENTPARETAPEAVECCHRONO AS
 SELECT classementcrparetape.* , etape.depart ,     arrivee - depart AS chrono from classementcrparetape join etape on classementCRParEtape.etapeid = etape.id ;
 
@@ -100,7 +100,6 @@ select
     coureur.id ,  
     case when extract(year from age(coureur.dtn)) <18
     then 'JUNIOR'
-    ELSE 'SENIOR'
     END AS categorie
 from coureur ;
 drop VIEW categorieselonsexe cascade;
@@ -119,13 +118,13 @@ Create view categoriecomplet as
 insert into coureurcategorie(categorie,coureur) select categorie,id   from  
 categoriecomplet;
 
-drop VIEW COMPLETResultatEtapecategorie;
+drop VIEW COMPLETResultatEtapecategorie cascade;
 CREATE VIEW COMPLETResultatEtapecategorie as
 select COMPLETResultatEtape.* , coureurcategorie.categorie from COMPLETResultatEtape join coureurcategorie
 on coureurcategorie.coureur =COMPLETResultatEtape.coureurid ;
 
 -- point par categorie
-drop view classementparcrparcategorieselonetape
+drop view classementparcrparcategorieselonetape cascade;
 create view classementparcrparcategorieselonetape as 
 select 
 DENSE_RANK() OVER (partition by COMPLETResultatEtapecategorie.categorie ,COMPLETResultatEtapecategorie.etapeid  ORDER BY COMPLETResultatEtapecategorie.Arrivee ) as rank
@@ -149,7 +148,7 @@ classementequipeavecpoint.categorie,
 classementequipeavecpoint.point
 from classementequipeavecpoint
 ;
-drop view Classementparequipetous;
+drop view Classementparequipetous cascade;
 create view Classementparequipetous as 
 with classementequipeavecpoint as
 (select   equipe ,sum( point) as point from 

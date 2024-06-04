@@ -229,9 +229,9 @@ public class CTAdmin {
 
             s.executeUpdate("delete from categorie;");
             s.executeUpdate(
-                    "INSERT INTO Categorie (ID,NOM) SELECT Categorie, Categorie FROM categoriecomplet on CONFLICT do NOTHING;");
+                    "INSERT INTO Categorie (ID,NOM) SELECT Categorie, Categorie FROM categoriecomplet where categorie is not null on CONFLICT do NOTHING;");
             s.executeUpdate(
-                    "insert into coureurcategorie(categorie,coureur) select categorie,id   from categoriecomplet;");
+                    "insert into coureurcategorie(categorie,coureur) select categorie,id   from categoriecomplet where categorie is not null;");
         } finally {
             connection.commit();
             connection.close();

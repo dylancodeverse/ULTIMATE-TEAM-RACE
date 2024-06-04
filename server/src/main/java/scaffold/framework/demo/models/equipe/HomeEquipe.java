@@ -32,7 +32,7 @@ public class HomeEquipe {
                 homeEquipe = new HomeEquipe();
                 etapetemp = classementparetapeavecchrono.getEtapenom();
                 homeEquipe.setEtapenom(etapetemp);
-                homeEquipe.setEtapeId(cls[0].getEtapeid());
+                homeEquipe.setEtapeId(classementparetapeavecchrono.getEtapeid());
                 homeEquipes.add(homeEquipe);
             }
             homeEquipe.setChrono(classementparetapeavecchrono.getChrono().toString().split("days")[1]);
