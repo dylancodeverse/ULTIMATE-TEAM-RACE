@@ -2,19 +2,13 @@ package scaffold.framework.demo.models.course;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.Random;
 
 import org.json.JSONArray;
 
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-
 import orm.DynamicORM;
+import scaffold.framework.demo.models.pdf.PdfGenerator;
 
 public class ClassementEQ extends DynamicORM<ClassementEQ> {
     Long rang;
@@ -24,12 +18,8 @@ public class ClassementEQ extends DynamicORM<ClassementEQ> {
     public byte[] generatePDFSelonPlace(Connection connection, String fileTemplate, String condition) throws Exception {
 
         ClassementEQ cls = selectWhere(connection, true, "rang=1")[0];
-        JasperReport jasperReport = JasperCompileManager.compileReport(fileTemplate);
-        Map<String, Object> mpas = new HashMap<>();
-        System.out.println("EQUIPE :" + cls.getEquipe());
-        mpas.put("Parameter3", "EQUIPE :" + cls.getEquipe());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, mpas);
-        return JasperExportManager.exportReportToPdf(jasperPrint);
+        return PdfGenerator.generatePdfFromHtml(fileTemplate, new String[] { "equipe" },
+                new String[] { cls.getEquipe() });
     }
 
     public static String[] getJSONPieChartInformation(ClassementEQ[] fs) throws Exception {
