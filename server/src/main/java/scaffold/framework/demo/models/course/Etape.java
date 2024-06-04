@@ -1,6 +1,7 @@
 package scaffold.framework.demo.models.course;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -54,7 +55,16 @@ public class Etape extends DynamicORM<Etape> {
     public static void insertAll(Connection connection, List<Etape> importedDataList) throws Exception {
         for (Etape etape : importedDataList) {
             etape.setAll();
-            etape.insert(connection, true);
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement(
+                            "insert into etape (nom,longueurkm,nbcoureur,rangetape,depart) values(?,?,?,?,?) on conflict do nothing");
+            preparedStatement.setString(1, etape.getNom());
+            preparedStatement.setDouble(2, etape.getLongueurKM());
+            preparedStatement.setInt(3, etape.getNbCoureur());
+            preparedStatement.setInt(4, etape.getRangEtape());
+            preparedStatement.setTimestamp(5, etape.getDepart());
+
+            preparedStatement.executeUpdate();
         }
     }
 

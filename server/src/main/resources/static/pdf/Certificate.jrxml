@@ -27,8 +27,8 @@
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="759" height="66" backcolor="#4998BF" uuid="d8d9e644-3a32-491d-97cb-a277aff17133"/>
 				<textField>
-					<reportElement x="348" y="30" width="100" height="30" uuid="29a309eb-079b-4163-809d-c327b9ca22bd"/>
-					<textFieldExpression><![CDATA[$P{Parameter3}]]></textFieldExpression>
+					<reportElement x="400" y="30" width="100" height="30" forecolor="#FFFFFF" uuid="27f07535-41b6-42fb-9465-876437f41738"/>
+					<textFieldExpression><![CDATA[$P{Montant total}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>

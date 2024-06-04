@@ -1,4 +1,4 @@
-drop view COMPLETResultatEtapeSansPenalite cascade;
+-- drop view COMPLETResultatEtapeSansPenalite cascade;
 -- sans penalite
 create view  COMPLETResultatEtapeSansPenalite as
 SELECT ResultatEtape.ID ,
@@ -11,12 +11,12 @@ SELECT ResultatEtape.ID ,
     JOIN Equipe on Coureur.Equipe = Equipe.ID
     ; 
 
-drop view penalitesomme
+-- drop view penalitesomme cascade ;
 -- somme des penalites
 create view penalitesomme as 
 select  etape  , equipe , sum( tempspenalite)   as tempspenalite from penalite GROUP by etape,equipe ;
 
-drop VIEW COMPLETResultatEtape cascade; 
+-- drop VIEW COMPLETResultatEtape cascade; 
 -- resultat avec libelle complet avec penalite
 CREATE VIEW COMPLETResultatEtape AS
 select
@@ -28,7 +28,7 @@ penalitesomme.equipe = COMPLETResultatEtapeSansPenalite.equipeid ;
 
 
 
-DROP view classementCRParEtape0 cascade;
+-- DROP view classementCRParEtape0 cascade;
 -- classement des coureurs par etape 
 CREATE view classementCRParEtape0 AS
 SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapeid ORDER BY COMPLETResultatEtape.chrono ) 
@@ -40,14 +40,14 @@ AS rang,
         where COMPLETResultatEtape.Arrivee is not null
         ORDER BY COMPLETResultatEtape.chrono;
 
-DROP view classementCRParEtape cascade;
+-- DROP view classementCRParEtape cascade;
 CREATE view classementCRParEtape AS
     select classementCRParEtape0.*, coalesce(point.point,0) as point from classementCRParEtape0
         left JOIN POINT ON POINT.RANK =RANG ;
 
 
 --  classement general des coureurs etape non prise en compte
-drop VIEW classementCR cascade;
+-- drop VIEW classementCR cascade;
 
 CREATE VIEW classementCR AS
 SELECT DENSE_RANK() OVER (ORDER BY SUM(POINT) desc) AS RANG ,
@@ -57,7 +57,7 @@ SELECT DENSE_RANK() OVER (ORDER BY SUM(POINT) desc) AS RANG ,
         FROM classementCRParEtape GROUP BY CoureurNOM, EQUIPE ;
 
 
-drop view classementEQ1 cascade;
+-- drop view classementEQ1 cascade;
 -- classement des equipes par etape
 CREATE VIEW classementEQ1 AS
 SELECT 
@@ -66,20 +66,20 @@ SELECT
         FROM classementCR
         GROUP BY classementCR.Equipe ;
 
-drop view   CLASSEMENTEQ0 cascade;      
+-- drop view   CLASSEMENTEQ0 cascade;      
     -- initialisation point pour tous les equipes
 CREATE VIEW CLASSEMENTEQ0 AS
 SELECT Equipe.nom as Equipe ,
         0 AS POINTS
         FROM Equipe;            
 
-drop view CLASSEMENTEQ2 cascade;
+-- drop view CLASSEMENTEQ2 cascade;
 --  union initialisation et equipe avec leur points
 CREATE VIEW CLASSEMENTEQ2 AS 
     select * FROM classementEQ1 UNION SELECT * FROM CLASSEMENTEQ0 
     ;
 
-drop view CLASSEMENTEQ cascade;
+-- drop view CLASSEMENTEQ cascade;
 -- classement complet des equipes 
 CREATE VIEW CLASSEMENTEQ  AS 
     SELECT  DENSE_RANK() OVER (ORDER BY sum(points) desc) AS rang,
@@ -88,7 +88,7 @@ CREATE VIEW CLASSEMENTEQ  AS
     FROM CLASSEMENTEQ2
     GROUP BY Equipe ORDER by rang ;
     
-drop view etatcompteparetape cascade;
+-- drop view etatcompteparetape cascade;
 -- -- verification des etats de coureur participant a une etape par equipe (complet ou pas)
 CREATE VIEW etatcompteparetape as
     with resultatetapeavecequipe as
@@ -101,13 +101,13 @@ CREATE VIEW etatcompteparetape as
 
     select nbCoureur=nb as estcomplet , etape ,equipe from columnadded;
 
-drop VIEW CLASSEMENTPARETAPEAVECCHRONO cascade;
+-- drop VIEW CLASSEMENTPARETAPEAVECCHRONO cascade;
 CREATE VIEW CLASSEMENTPARETAPEAVECCHRONO AS
 SELECT classementcrparetape.*  from classementcrparetape  ;
 
 
 
-drop view Categoriecompletselonage cascade;
+-- drop view Categoriecompletselonage cascade;
 CREATE VIEW Categoriecompletselonage as
 select 
     coureur.id ,  
@@ -115,7 +115,7 @@ select
     then 'JUNIOR'
     END AS categorie
 from coureur ;
-drop VIEW categorieselonsexe cascade;
+-- drop VIEW categorieselonsexe cascade;
 CREATE VIEW categorieselonsexe as
 select 
     coureur.id ,  
@@ -123,20 +123,20 @@ select
 
 from coureur ;
 
-drop view categoriecomplet cascade ;
+-- drop view categoriecomplet cascade ;
 Create view categoriecomplet as 
     select * from Categoriecompletselonage union 
     select * from categorieselonsexe ;
 
 -- categoriecomplet;
 
-drop VIEW COMPLETResultatEtapecategorie cascade;
+-- drop VIEW COMPLETResultatEtapecategorie cascade;
 CREATE VIEW COMPLETResultatEtapecategorie as
 select COMPLETResultatEtape.* , coureurcategorie.categorie from COMPLETResultatEtape join coureurcategorie
 on coureurcategorie.coureur =COMPLETResultatEtape.coureurid ;
 
 -- point par categorie
-drop view classementparcrparcategorieselonetape cascade;
+-- drop view classementparcrparcategorieselonetape cascade;
 create view classementparcrparcategorieselonetape as 
 select 
 DENSE_RANK() OVER (partition by COMPLETResultatEtapecategorie.categorie ,COMPLETResultatEtapecategorie.etapeid  ORDER BY COMPLETResultatEtapecategorie.chrono ) as rank
@@ -146,7 +146,7 @@ DENSE_RANK() OVER (partition by COMPLETResultatEtapecategorie.categorie ,COMPLET
 
 
 -- 
-drop view classementparequipeavecpointparcategorie cascade;
+-- drop view classementparequipeavecpointparcategorie cascade;
 create view classementparequipeavecpointparcategorie as 
 with classementAvecPointParCoureurParCategorie as
 (select classementparcrparcategorieselonetape.*, point.point  from classementparcrparcategorieselonetape
@@ -160,7 +160,7 @@ classementequipeavecpoint.categorie,
 classementequipeavecpoint.point
 from classementequipeavecpoint
 ;
-drop view Classementparequipetous cascade;
+-- drop view Classementparequipetous cascade;
 create view Classementparequipetous as 
 with classementequipeavecpoint as
 (select   equipe ,sum( point) as point from 
@@ -182,14 +182,14 @@ from classementequipeavecpoint
 
 
 --view manisy nom n etape s n nom equipe 
-drop view  getPenaltiesWithName cascade;
+-- drop view  getPenaltiesWithName cascade;
 create view getPenaltiesWithName as 
 select penalite.*, etape.nom as nometape 
 from etape 
 join 
 penalite on penalite.etape=etape.id;
 
-drop view getPenaliteAll cascade;
+-- drop view getPenaliteAll cascade;
 create view getPenaliteAll as 
 select getPenaltiesWithName.Id, getPenaltiesWithName.nometape as etapes, equipe.nom as equipes,getPenaltiesWithName.tempspenalite as temps 
 from equipe 

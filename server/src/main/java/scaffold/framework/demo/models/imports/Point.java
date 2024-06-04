@@ -1,6 +1,7 @@
 package scaffold.framework.demo.models.imports;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 import com.opencsv.bean.CsvBindByName;
@@ -28,7 +29,12 @@ public class Point extends DynamicORM<Point> {
 
         for (Point point : importedDataList) {
             point.setAll();
-            point.insert(connection, true);
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("insert into point (rank,point) values(?,?) on conflict do nothing");
+            preparedStatement.setInt(1, point.getRank());
+            preparedStatement.setInt(2, point.getPoint());
+
+            preparedStatement.executeUpdate();
         }
     }
 

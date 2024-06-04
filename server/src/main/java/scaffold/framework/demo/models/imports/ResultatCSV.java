@@ -18,7 +18,7 @@ public class ResultatCSV extends DynamicORM<ResultatCSV> {
 
     Integer etape_rang;
     @CsvBindByName(column = "numero dossard")
-    Integer numero_dossard;
+    String numero_dossard;
     @CsvBindByName(column = "nom")
     String nom;
     @CsvBindByName(column = "genre")
@@ -52,9 +52,9 @@ public class ResultatCSV extends DynamicORM<ResultatCSV> {
 
     public static void insertAllPeripherie(Connection connection) throws Exception {
         String[] sqls = {
-                "INSERT INTO EQUIPE(NOM ,LOGIN, PSWD ) SELECT distinct RESULTATCSV.equipe,  RESULTATCSV.equipe, RESULTATCSV.equipe FROM RESULTATCSV ;",
-                "INSERT INTO Coureur ( nom,numerodossard,genre,dtn,Equipe) select distinct RESULTATCSV.nom , RESULTATCSV.numero_dossard , RESULTATCSV.genre , RESULTATCSV.date_naissance , equipe.id from RESULTATCSV join equipe on equipe.nom= RESULTATCSV.equipe ;",
-                "INSERT INTO ResultatEtape (Etape, Coureur, Arrivee)  select distinct etape.ID as etapeid , coureur.id as coureurid, resultatcsv.arrivee from RESULTATCSV  join coureur on RESULTATCSV.nom = coureur.nom  join etape on RESULTATCSV.etape_rang = etape.rangEtape  ;" };
+                "INSERT INTO EQUIPE(NOM ,LOGIN, PSWD ) SELECT distinct RESULTATCSV.equipe,  RESULTATCSV.equipe, RESULTATCSV.equipe FROM RESULTATCSV on conflict do nothing;",
+                "INSERT INTO Coureur ( nom,numerodossard,genre,dtn,Equipe) select distinct RESULTATCSV.nom , RESULTATCSV.numero_dossard , RESULTATCSV.genre , RESULTATCSV.date_naissance , equipe.id from RESULTATCSV join equipe on equipe.nom= RESULTATCSV.equipe on conflict do nothing;",
+                "INSERT INTO ResultatEtape (Etape, Coureur, Arrivee)  select distinct etape.ID as etapeid , coureur.id as coureurid, resultatcsv.arrivee from RESULTATCSV  join coureur on RESULTATCSV.nom = coureur.nom  join etape on RESULTATCSV.etape_rang = etape.rangEtape  on conflict do nothing;" };
         for (String string : sqls) {
             Statement statement = connection.createStatement();
             System.out.println(string);
@@ -71,11 +71,11 @@ public class ResultatCSV extends DynamicORM<ResultatCSV> {
         this.etape_rang = etape_rang;
     }
 
-    public Integer getNumero_dossard() {
+    public String getNumero_dossard() {
         return numero_dossard;
     }
 
-    public void setNumero_dossard(Integer numero_dossard) {
+    public void setNumero_dossard(String numero_dossard) {
         this.numero_dossard = numero_dossard;
     }
 

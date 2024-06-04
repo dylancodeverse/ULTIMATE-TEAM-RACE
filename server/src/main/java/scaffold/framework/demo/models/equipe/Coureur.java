@@ -7,7 +7,7 @@ import orm.DynamicORM;
 public class Coureur extends DynamicORM<Coureur> {
     String ID;
     String nom;
-    Integer numerodossard;
+    String numerodossard;
     Integer genre;
     Date dtn;
     String Equipe;
@@ -28,11 +28,11 @@ public class Coureur extends DynamicORM<Coureur> {
         this.nom = nom;
     }
 
-    public Integer getNumerodossard() {
+    public String getNumerodossard() {
         return numerodossard;
     }
 
-    public void setNumerodossard(Integer numerodossard) {
+    public void setNumerodossard(String numerodossard) {
         this.numerodossard = numerodossard;
     }
 

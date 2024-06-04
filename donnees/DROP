@@ -1,0 +1,11 @@
+
+DROP TABLE AppUser cascade ;
+DROP TABLE POINT cascade ;
+DROP TABLE Equipe cascade ;
+DROP TABLE Coureur cascade ;
+DROP TABLE Categorie cascade ;
+DROP TABLE CoureurCategorie cascade ;
+DROP TABLE Etape cascade ;
+DROP TABLE ResultatEtape cascade ;
+DROP table penalite cascade ;
+DROP TABLE RESULTATCSV cascade ;
