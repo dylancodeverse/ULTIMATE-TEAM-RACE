@@ -278,7 +278,7 @@ public class CTAdmin {
         Connection connection = dataSource.getConnection();
         try {
             byte[] pdfContent = new Classementparequipeavecpointparcategorie().generatePDFSelonPlace(connection,
-                    tempFile, "rang=1 and categorie='" + categorie.trim() + "'");
+                    tempFile, "rank=1 and categorie='" + categorie.trim() + "'");
             // Créer les en-têtes de la réponse
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);

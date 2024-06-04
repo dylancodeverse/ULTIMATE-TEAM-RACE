@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificat de Vainqueur</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .certificate {
+            width: 700px;
+            padding: 20px;
+            border: 10px solid #d4af37; /* Doré */
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        .certificate::before, .certificate::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 5px solid #c0c0c0; /* Argenté */
+            border-radius: 10px;
+            pointer-events: none;
+        }
+        .certificate::after {
+            border-color: #b0b0b0;
+            transform: scale(0.98);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #d4af37;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin: 10px 0;
+            color: #333333;
+        }
+        p {
+            font-size: 1em;
+            color: #666666;
+        }
+        .recipient {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333333;
+        }
+        .details {
+            font-size: 1em;
+            margin: 20px 0;
+            color: #333333;
+        }
+        .signature {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .signature div {
+            width: 30%;
+            border-top: 1px solid #333333;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <h1>Certificat de Vainqueur</h1>
+        <h2>Félicitations à</h2>
+        <div class="recipient">[Nom du Vainqueur]</div>
+        <p>Pour avoir terminé en première place dans la course</p>
+        <div class="details">[Nom de la Course]<br>[Date de la Course]</div>
+        <div class="signature">
+            <div>[Signature 1]</div>
+            <div>[Signature 2]</div>
+        </div>
+    </div>
+</body>
+</html>

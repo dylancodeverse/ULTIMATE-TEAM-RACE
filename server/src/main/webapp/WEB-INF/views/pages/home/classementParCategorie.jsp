@@ -28,7 +28,7 @@
                 <form class="prediction-form"  method="get" action="/admin/classementParCategoriegeneratePDF">
                   <% if(request.getAttribute("classement")!=null){%>
 
-                  <input type="hidden" value="<%= request.getAttribute("categorie")%>">
+                  <input type="hidden" value="<%= request.getAttribute("categorie")%>" name="categorie">
                   <button type="submit"> Generer PDF pour 1ere place</button>
                   <%}%>
                 </form>
