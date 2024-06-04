@@ -69,7 +69,9 @@ public class CTHome {
     public String getPageEQ(Model model) throws Exception {
         Connection connection = dataSource.getConnection();
         try {
-            model.addAttribute("classements", new ClassementEQ().select(connection, false));
+            ClassementEQ[] cls = new ClassementEQ().select(connection, false);
+            model.addAttribute("classements", cls);
+            model.addAttribute("chart", ClassementEQ.getJSONPieChartInformation(cls));
             return "pages/home/classementEQ";
         } finally {
             if (!connection.isClosed()) {
@@ -92,6 +94,7 @@ public class CTHome {
                     "categorie='" + categorie + "'");
         }
         model.addAttribute("classement", cls);
+        model.addAttribute("chart", Classementparequipeavecpointparcategorie.getJSONPieChartInformation(cls));
         return "pages/home/classementParCategorie";
     }
 

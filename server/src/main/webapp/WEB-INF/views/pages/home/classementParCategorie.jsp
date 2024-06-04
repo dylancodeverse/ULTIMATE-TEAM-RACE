@@ -10,6 +10,7 @@
     <title>ULTIMATE RACE</title>
 
     <%@ include file="../../templates/headerLinkList.html" %>
+    <script src="/static/js/chart.umd.min.js"></script>
 
 </head>
 
@@ -59,12 +60,41 @@
                     </tbody>
                   </table>
               </div>
+              <div class="chart">
+                <canvas id="myChart" width="400" height="400"></canvas>
+              </div>
+
             </section>
+
         </div>
     </section>
 
     <%@ include file="../../templates/script.html" %>
-
+    <script>
+      // Données pour le graphique
+      var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+      var yValues = [55, 49, 44, 24, 15];
+      var barColors = ["red", "green", "blue", "orange", "brown"];
+  
+      // Initialisation du graphique
+      new Chart("myChart", {
+          type: "pie",
+          data: {
+              labels: xValues,
+              datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+              }]
+          },
+          options: {
+              title: {
+                  display: true,
+                  text: "World Wide Wine Production"
+              }
+          }
+      });
+  </script>
+  
 </body>
 
 </html>

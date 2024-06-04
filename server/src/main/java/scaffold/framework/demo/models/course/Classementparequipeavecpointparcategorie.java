@@ -1,6 +1,9 @@
 package scaffold.framework.demo.models.course;
 
 import java.math.BigDecimal;
+import java.util.Random;
+
+import org.json.JSONArray;
 
 import orm.DynamicORM;
 
@@ -9,6 +12,43 @@ public class Classementparequipeavecpointparcategorie extends DynamicORM<Classem
     String equipe;
     String categorie;
     Long point;
+
+    public static String[] getJSONPieChartInformation(Classementparequipeavecpointparcategorie[] fs) throws Exception {
+        return new String[] { getJSONDATA(fs), getColor(fs), getLabel(fs) };
+    }
+
+    public static String getLabel(Classementparequipeavecpointparcategorie[] fs) {
+        String[] labels = new String[fs.length];
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = fs[i].getEquipe();
+        }
+        return new JSONArray(labels).toString();
+    }
+
+    public static String getJSONDATA(Classementparequipeavecpointparcategorie[] stats) {
+        Long[] datas = new Long[stats.length];
+        for (int i = 0; i < datas.length; i++) {
+            datas[i] = stats[i].getPoint();
+        }
+        return new JSONArray(datas).toString();
+    }
+
+    public static String getRandomRGBAColor() {
+        Random random = new Random();
+        int red = random.nextInt(256); // Valeur de rouge entre 0 et 255
+        int green = random.nextInt(256); // Valeur de vert entre 0 et 255
+        int blue = random.nextInt(256); // Valeur de bleu entre 0 et 255
+
+        return String.format("rgba(%d, %d, %d)", red, green, blue);
+    }
+
+    public static String getColor(Classementparequipeavecpointparcategorie[] stats) {
+        String[] colors = new String[stats.length];
+        for (int i = 0; i < stats.length; i++) {
+            colors[i] = getRandomRGBAColor();
+        }
+        return new JSONArray(colors).toString();
+    }
 
     public void setPoint(BigDecimal big) {
         setPoint(Long.parseLong(big.toPlainString()));

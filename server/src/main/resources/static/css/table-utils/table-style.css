@@ -132,3 +132,8 @@ h2 {
     color: #cccccc;
     width: 320px;
   }
+
+.chart {
+  width: 500px;
+  margin-left: 25%;
+}
