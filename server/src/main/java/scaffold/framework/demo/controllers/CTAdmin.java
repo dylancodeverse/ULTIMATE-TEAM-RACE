@@ -307,7 +307,7 @@ public class CTAdmin {
         return "pages/admin/allPenalites";
     }
 
-    @PostMapping("/deletePenalite/{id}")
+    @GetMapping("/deletePenalite/{id}")
     @Auth(classSource = RulesConf.class, rule = "isAdmin")
     public String deletePenalite(@PathVariable String id) throws Exception {
         Connection con = dataSource.getConnection();
@@ -339,21 +339,22 @@ public class CTAdmin {
 
     @PostMapping("/penalite")
     @Auth(classSource = RulesConf.class, rule = "isAdmin")
-    public String insertPenalite(String etape, String equipe, String penalite) throws Exception {
+    public String insertPenalite(String etape, String equipe, String temps) throws Exception {
         Connection con = dataSource.getConnection();
         try {
             Penalite penalite2 = new Penalite();
             penalite2.setEquipe(equipe);
             penalite2.setEtape(etape);
-            penalite2.setTempspenalite(penalite);
-            penalite2.insert(con, true);
+            penalite2.setTempspenalite(temps);
+            penalite2.insert(con, false);
 
         } finally {
-            con.commit();
-            con.close();
+            if (!con.isClosed()) {
+                con.close();
+            }
         }
 
-        return "redirect:pages/admin/penalite";
+        return "redirect:/admin/penalite";
 
     }
 

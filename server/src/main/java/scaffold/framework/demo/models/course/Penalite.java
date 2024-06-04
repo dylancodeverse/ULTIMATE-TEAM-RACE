@@ -44,6 +44,7 @@ public class Penalite extends DynamicORM<Penalite> {
     }
 
     public void setTempspenalite(String timeString) {
+        System.out.println(timeString);
         setTempspenalite(Time.valueOf(timeString));
     }
 }
