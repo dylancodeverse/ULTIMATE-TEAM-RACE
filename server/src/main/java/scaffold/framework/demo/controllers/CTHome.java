@@ -18,7 +18,6 @@ import scaffold.framework.demo.models.course.ClassementCR;
 import scaffold.framework.demo.models.course.ClassementCRparetape;
 import scaffold.framework.demo.models.course.ClassementEQ;
 import scaffold.framework.demo.models.course.Classementparequipeavecpointparcategorie;
-import scaffold.framework.demo.models.course.Classementparequipetous;
 import scaffold.framework.demo.models.course.Etape;
 
 import io.micrometer.common.lang.Nullable;
@@ -88,11 +87,12 @@ public class CTHome {
 
         Classementparequipeavecpointparcategorie[] cls = null;
         if (categorie == null) {
-            cls = new Classementparequipetous().select(connection, false);
+            return "redirect:/home/classementParCategorie?categorie=M";
 
         } else {
             cls = new Classementparequipeavecpointparcategorie().selectWhere(connection, false,
                     "categorie='" + categorie + "'");
+            Classementparequipeavecpointparcategorie.setCSSEXECO(cls);
         }
         model.addAttribute("classement", cls);
         model.addAttribute("categorie", categorie);

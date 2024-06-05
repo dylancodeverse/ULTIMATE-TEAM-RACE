@@ -15,6 +15,21 @@ public class Classementparequipeavecpointparcategorie extends DynamicORM<Classem
     String equipe;
     String categorie;
     Long point;
+    String css;
+
+    public static void setCSSEXECO(Classementparequipeavecpointparcategorie[] cls) {
+        try {
+            for (int i = 0; i < cls.length; i++) {
+                if (cls[i].getRank() == cls[i + 1].getRank()) {
+                    cls[i].setCss("color:yellow");
+                    cls[i + 1].setCss("color:yellow");
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
+    }
 
     public byte[] generatePDFSelonPlace(Connection connection, String fileTemplate, String condition) throws Exception {
 
@@ -96,5 +111,13 @@ public class Classementparequipeavecpointparcategorie extends DynamicORM<Classem
 
     public void setRank(Long rank) {
         this.rank = (rank);
+    }
+
+    public String getCss() {
+        return css;
+    }
+
+    public void setCss(String css) {
+        this.css = css;
     }
 }

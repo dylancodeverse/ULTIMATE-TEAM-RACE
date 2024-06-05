@@ -51,12 +51,12 @@
                         <% Classementparequipeavecpointparcategorie[] classements =(Classementparequipeavecpointparcategorie[])(request.getAttribute("classement")) ;
                         for (Classementparequipeavecpointparcategorie classement :classements) { %>
                         <tr scope="row">
-                            <td><%= classement.getRank() %></td>
-                            <td>
+                            <td style="<%= classement.getCss() %>;"><%= classement.getRank() %></td>
+                            <td style="<%= classement.getCss() %>;">
                             <small class="d-block"><%= classement.getEquipe() %> </small>
                             </td>
-                            <td><%= classement.getPoint() %></td>
-                            <td>
+                            <td style="<%= classement.getCss() %>;"><%= classement.getPoint() %></td>
+                            <td style="<%= classement.getCss() %>;">
                             <small class="d-block"><%= classement.getCategorie() %> </small>
                             </td>
 
