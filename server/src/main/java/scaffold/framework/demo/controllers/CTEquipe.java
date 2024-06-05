@@ -2,10 +2,12 @@ package scaffold.framework.demo.controllers;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +61,33 @@ public class CTEquipe {
             if (!connection.isClosed()) {
                 connection.close();
             }
+        }
+    }
+
+    @GetMapping("/check")
+    @Auth(classSource = RulesConf.class, rule = "isEquipe")
+    public ResponseEntity<?> getMethodName(HttpServletRequest request, @RequestParam String etapeid)
+            throws SQLException {
+        Connection connection = dataSource.getConnection();
+        HashMap<String, String> hashMap = new HashMap<>();
+        HttpSession session = request.getSession();
+        String equipeID = session.getAttribute("USRID").toString();
+        try {
+            Etatcompteparetape[] etatcompteparetape = new Etatcompteparetape().selectWhere(connection, true,
+                    "etape='" + etapeid + "' and equipe='" + equipeID + "'");
+            if (etatcompteparetape.length > 0) {
+                if (etatcompteparetape[0].getEstcomplet()) {
+                    throw new Exception("Deja complet");
+                }
+            }
+        } catch (Exception e) {
+            hashMap.put(etapeid, e.getMessage());
+        }
+
+        if (hashMap.isEmpty()) {
+            return ResponseEntity.ok("Paiement effectué avec succès !");
+        } else {
+            return ResponseEntity.badRequest().body(hashMap);
         }
     }
 

@@ -31,7 +31,7 @@
             </header>
             <% for(HomeEquipe home: (HomeEquipe[])(request.getAttribute("homeequipes"))){%>
             <section class="resources">
-                <h2><%= home.getEtapenom() %> :</h2>
+                <h2><%= home.getEtapeId()+" "+home.getEtapenom()+" avec depart: " +home.getDepartEtape()%> :</h2>
                 <div class="resource-cards">
                     <div class="card">
                         <%for(int i =0; i< home.getCoureurs().size(); i++){%>
@@ -39,8 +39,10 @@
                         <h3> avec chrono :<p><%= home.getChrono().get(i) %></p></h3>
                         <%}%>
                         <a href="/equipe/affectation?etapeid=<%=home.getEtapeId()%>"> 
-                            <button > Ajouter</button>
+                            <button onClick("checkEtat(<%=home.getEtapeId()%>)")> Ajouter</button>
                         </a>
+                        <span id="<%=home.getEtapeId()%>Error" style="color: red;"> </span>
+
                     </div>
                 </div>
             </section>
@@ -48,6 +50,33 @@
         </div>        
     </section>
     <%@ include file="../../templates/script.html" %>
+
+
+    <script>
+
+    function checkEtat(params) {
+        $.ajax({
+                type: "GET",
+                url: "/equipe/check?etapeId="+params,
+                data: formData,
+                dataType: "json", // Attendre une réponse JSON du backend
+                success: function(response) {
+                    //  rediriger l'utilisateur vers 
+                    console.log("/equipe/affectation?etapeid="+params)
+                },
+                error: function(xhr, status, error) {
+                    // Gérer les erreurs de validation provenant du backend
+                    var errors = xhr.responseJSON;
+                    $.each(errors, function(key, value) {
+                        $('#' + key + 'Error').text(value); // Afficher les erreurs à côté des champs correspondants
+                    });
+                }
+            });
+    }
+
+
+
+</script>
 
 </body>
 
