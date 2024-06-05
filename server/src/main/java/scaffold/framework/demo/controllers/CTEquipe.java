@@ -66,7 +66,7 @@ public class CTEquipe {
 
     @GetMapping("/check")
     @Auth(classSource = RulesConf.class, rule = "isEquipe")
-    public ResponseEntity<?> getMethodName(HttpServletRequest request, @RequestParam String etapeid)
+    public ResponseEntity<?> getMethodName(HttpServletRequest request, @RequestParam String etapeId)
             throws SQLException {
         Connection connection = dataSource.getConnection();
         HashMap<String, String> hashMap = new HashMap<>();
@@ -74,14 +74,18 @@ public class CTEquipe {
         String equipeID = session.getAttribute("USRID").toString();
         try {
             Etatcompteparetape[] etatcompteparetape = new Etatcompteparetape().selectWhere(connection, true,
-                    "etape='" + etapeid + "' and equipe='" + equipeID + "'");
+                    "etape='" + etapeId + "' and equipe='" + equipeID + "'");
             if (etatcompteparetape.length > 0) {
                 if (etatcompteparetape[0].getEstcomplet()) {
                     throw new Exception("Deja complet");
                 }
             }
         } catch (Exception e) {
-            hashMap.put(etapeid, e.getMessage());
+            hashMap.put(etapeId, e.getMessage());
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
         }
 
         if (hashMap.isEmpty()) {

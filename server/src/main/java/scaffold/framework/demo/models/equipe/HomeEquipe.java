@@ -25,11 +25,8 @@ public class HomeEquipe {
         }
         ArrayList<HomeEquipe> homeEquipes = new ArrayList<HomeEquipe>();
 
-        String etapetemp = cls[0].getEtapenom();
-        HomeEquipe homeEquipe = new HomeEquipe();
-        homeEquipe.setEtapenom(etapetemp);
-        homeEquipe.setEtapeId(cls[0].getEtapeid());
-        homeEquipe.setDepartEtape(cls[0].getDepart());
+        String etapetemp = "";
+        HomeEquipe homeEquipe = null;
         for (CLASSEMENTPARETAPEAVECCHRONO classementparetapeavecchrono : cls) {
             if (!etapetemp.equals(classementparetapeavecchrono.getEtapenom())) {
                 homeEquipe = new HomeEquipe();
@@ -42,6 +39,16 @@ public class HomeEquipe {
             homeEquipe.setChrono(classementparetapeavecchrono.getChrono().toString().split("days")[1]);
             homeEquipe.setCoureurs(classementparetapeavecchrono.getCoureurnom());
         }
+        ETAPENONPARTICIPEPAREQUIPE[] nop = new ETAPENONPARTICIPEPAREQUIPE().select();
+        for (ETAPENONPARTICIPEPAREQUIPE each : nop) {
+            homeEquipe = new HomeEquipe();
+            homeEquipe.setEtapenom(each.getNom());
+            homeEquipe.setEtapeId(each.getId());
+            homeEquipe.setDepartEtape(each.getDepart());
+
+            homeEquipes.add(homeEquipe);
+        }
+
         return homeEquipes.toArray(new HomeEquipe[homeEquipes.size()]);
     }
 
