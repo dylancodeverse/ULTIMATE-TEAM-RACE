@@ -43,7 +43,7 @@
                         <tr scope="row">
                             <td><%= classement.getRang() %></td>
                             <td>
-                            <small class="d-block"><%= classement.getEquipe() %> </small>
+                            <small class="d-block"> <a href="/home/classementequipedetail?equipe=<%= classement.getEquipe() %>"> <%= classement.getEquipe() %> </a> </small>
                             </td>
                             <td><%= classement.getPoints() %></td>
                         </tr>

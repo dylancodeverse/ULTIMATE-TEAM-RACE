@@ -117,4 +117,20 @@ public class CTHome {
         }
     }
 
+    @GetMapping("/classementequipedetail")
+    public String getPageDetailCoureurSelonEquipe(Model model, @RequestParam String equipe) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+            ClassementCRparetape[] classementCR = new ClassementCRparetape().selectWhere(connection, false,
+                    "equipe='" + equipe + "'");
+            model.addAttribute("details", classementCR);
+            return "pages/home/classementCRDetail";
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
+
+    }
+
 }
