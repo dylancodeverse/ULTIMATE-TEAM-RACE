@@ -19,7 +19,7 @@ public class ClassementEQ extends DynamicORM<ClassementEQ> {
 
         ClassementEQ cls = selectWhere(connection, true, "rang=1")[0];
         return PdfGenerator.generatePdfFromHtml(fileTemplate,
-                new String[] { "[Nom du Vainqueur]", "[Date de l'Événement]" },
+                new String[] { "[Nom du Vainqueur]", "[Date de la Course]" },
 
                 new String[] { cls.getEquipe(), LocalDate.now().toString() });
     }

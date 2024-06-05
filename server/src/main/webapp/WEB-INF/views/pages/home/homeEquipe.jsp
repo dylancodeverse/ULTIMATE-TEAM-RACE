@@ -23,7 +23,7 @@
     <section class="home-section">
         <div class="container">
             <header class="hero">
-                <h1>EQUIPE A</h1>
+                <h1>EQUIPE <%= request.getSession().getAttribute("USRID").toString() %></h1>
                 <form class="prediction-form"  method="post">
                     <input type="prediction" name="prediction" placeholder="Recherche">
                     <button type="submit">Filter</button>

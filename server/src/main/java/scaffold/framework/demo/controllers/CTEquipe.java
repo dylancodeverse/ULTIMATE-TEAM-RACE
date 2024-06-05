@@ -71,6 +71,7 @@ public class CTEquipe {
         try {
             HttpSession session = request.getSession();
             String equipeID = session.getAttribute("USRID").toString();
+            System.out.println(equipeID);
             // prendre tous les coureurs de l'equipe
             Coureur[] coureurs = new Coureur().selectWhere(connection, true, "Equipe='" + equipeID + "'");
             model.addAttribute("coureurs", coureurs);

@@ -18,9 +18,9 @@ public class Classementparequipeavecpointparcategorie extends DynamicORM<Classem
 
     public byte[] generatePDFSelonPlace(Connection connection, String fileTemplate, String condition) throws Exception {
 
-        Classementparequipeavecpointparcategorie cls = selectWhere(connection, true, "rang=1")[0];
+        Classementparequipeavecpointparcategorie cls = selectWhere(connection, true, condition)[0];
         return PdfGenerator.generatePdfFromHtml(fileTemplate,
-                new String[] { "[Nom du Vainqueur]", "[Date de l'Événement]" },
+                new String[] { "[Nom du Vainqueur]", "[Date de la Course]" },
 
                 new String[] { cls.getEquipe(), LocalDate.now().toString() });
     }
