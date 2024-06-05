@@ -11,6 +11,7 @@ import com.opencsv.bean.CsvBindByName;
 import orm.DynamicORM;
 import orm.annotations.Ignore;
 import scaffold.framework.demo.config.opencsvconfig.DateConvert;
+import scaffold.framework.demo.config.opencsvconfig.StringConvert;
 import scaffold.framework.demo.config.opencsvconfig.TimestampConverter;
 
 public class ResultatCSV extends DynamicORM<ResultatCSV> {
@@ -84,7 +85,7 @@ public class ResultatCSV extends DynamicORM<ResultatCSV> {
     }
 
     public void setNom(String nom) {
-        this.nom = nom;
+        this.nom = StringConvert.convert(nom);
     }
 
     public String getGenre() {
@@ -92,7 +93,7 @@ public class ResultatCSV extends DynamicORM<ResultatCSV> {
     }
 
     public void setGenre(String genre) {
-        this.genre = genre;
+        this.genre =StringConvert.convert(genre) ;
     }
 
     public String getEquipe() {
@@ -100,7 +101,7 @@ public class ResultatCSV extends DynamicORM<ResultatCSV> {
     }
 
     public void setEquipe(String equipe) {
-        this.equipe = equipe;
+        this.equipe = StringConvert.convert( equipe);
     }
 
     public Timestamp getArrivee() {

@@ -12,6 +12,7 @@ import orm.annotations.Id;
 import orm.annotations.Ignore;
 import scaffold.framework.demo.config.opencsvconfig.DoubleConverter;
 import scaffold.framework.demo.config.opencsvconfig.IntegerConverter;
+import scaffold.framework.demo.config.opencsvconfig.StringConvert;
 import scaffold.framework.demo.config.opencsvconfig.TimestampConverter;
 
 public class Etape extends DynamicORM<Etape> {
@@ -81,7 +82,7 @@ public class Etape extends DynamicORM<Etape> {
     }
 
     public void setNom(String nom) {
-        Nom = nom;
+        Nom = StringConvert.convert(nom) ;
     }
 
     public Double getLongueurKM() {
