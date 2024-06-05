@@ -1,12 +1,14 @@
 package scaffold.framework.demo.models.equipe;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class HomeEquipe {
 
     String etapenom;
     String etapeId;
+    Timestamp departEtape;
     ArrayList<String> coureurs;
     ArrayList<String> chrono;
 
@@ -27,12 +29,14 @@ public class HomeEquipe {
         HomeEquipe homeEquipe = new HomeEquipe();
         homeEquipe.setEtapenom(etapetemp);
         homeEquipe.setEtapeId(cls[0].getEtapeid());
+        homeEquipe.setDepartEtape(cls[0].getDepart());
         for (CLASSEMENTPARETAPEAVECCHRONO classementparetapeavecchrono : cls) {
             if (!etapetemp.equals(classementparetapeavecchrono.getEtapenom())) {
                 homeEquipe = new HomeEquipe();
                 etapetemp = classementparetapeavecchrono.getEtapenom();
                 homeEquipe.setEtapenom(etapetemp);
                 homeEquipe.setEtapeId(classementparetapeavecchrono.getEtapeid());
+                homeEquipe.setDepartEtape(classementparetapeavecchrono.getDepart());
                 homeEquipes.add(homeEquipe);
             }
             homeEquipe.setChrono(classementparetapeavecchrono.getChrono().toString().split("days")[1]);
@@ -79,6 +83,14 @@ public class HomeEquipe {
 
     public void setEtapeId(String etapeId) {
         this.etapeId = etapeId;
+    }
+
+    public Timestamp getDepartEtape() {
+        return departEtape;
+    }
+
+    public void setDepartEtape(Timestamp departEtape) {
+        this.departEtape = departEtape;
     }
 
 }
