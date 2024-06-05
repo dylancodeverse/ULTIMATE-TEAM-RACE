@@ -22,7 +22,7 @@ drop VIEW COMPLETResultatEtape cascade;
 CREATE VIEW COMPLETResultatEtape AS
 select
 COMPLETResultatEtapeSansPenalite.* , COMPLETResultatEtapeSansPenalite.arrivee - COMPLETResultatEtapeSansPenalite.depart +
-coalesce(penalitesomme.tempspenalite,'00:00:00') as chrono from COMPLETResultatEtapeSansPenalite left join penalitesomme on penalitesomme.etape =COMPLETResultatEtapeSansPenalite.etapeid and 
+coalesce(penalitesomme.tempspenalite,'00:00:00') as chrono , coalesce(penalitesomme.tempspenalite,'00:00:00') as tempspenalite from COMPLETResultatEtapeSansPenalite left join penalitesomme on penalitesomme.etape =COMPLETResultatEtapeSansPenalite.etapeid and 
 penalitesomme.equipe = COMPLETResultatEtapeSansPenalite.equipeid ;
 
 

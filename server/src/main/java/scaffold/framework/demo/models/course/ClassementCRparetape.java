@@ -21,6 +21,38 @@ public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
     Timestamp depart;
     String genre;
     PGInterval chrono;
+    PGInterval tempspenalite;
+
+    public String getTempspenaliteAsSTR() {
+        System.out.println("fory");
+        try {
+            return getTempspenalite().toString().split("mons")[1];
+
+        } catch (Exception e) {
+            try {
+                return getTempspenalite().toString().split("months")[1];
+
+            } catch (Exception e2) {
+                return getTempspenalite().toString();
+
+            }
+        }
+    }
+
+    public String getChronoAsSTR() {
+        System.out.println("fory");
+        try {
+            return chrono.toString().split("mons")[1];
+
+        } catch (Exception e) {
+            try {
+                return getTempspenalite().toString().split("months")[1];
+            } catch (Exception e2) {
+                return chrono.toString();
+            }
+
+        }
+    }
 
     public Long getRang() {
         return rang;
@@ -132,5 +164,13 @@ public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
 
     public void setChrono(PGInterval chrono) {
         this.chrono = chrono;
+    }
+
+    public PGInterval getTempspenalite() {
+        return tempspenalite;
+    }
+
+    public void setTempspenalite(PGInterval tempspenalite) {
+        this.tempspenalite = tempspenalite;
     }
 }

@@ -8,7 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ULTIMATE RACE</title>
     <%@ include file="../../templates/headerLink.html" %>
+<style>
+.custombtn{
+      padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  background-color: #0d4856;
+  color: #fff;
+  cursor: pointer;
+}
 
+</style>
 </head>
 
 <body>
@@ -33,7 +44,7 @@
                         <h3>avec chrono :<p><%= each.getChrono() %></p></h3>                                
                             <%}%>
 
-                        <button onclick='checkEtat("<%= home.getEtapeId() %>")'>Ajouter</button>
+                        <button class="custombtn" onclick='checkEtat("<%= home.getEtapeId() %>")'>Ajouter</button>
                         <span id="<%= home.getEtapeId() %>Error" style="color: red;"></span>
                     </div>
                 </div>

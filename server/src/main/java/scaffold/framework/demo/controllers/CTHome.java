@@ -106,7 +106,8 @@ public class CTHome {
         try {
 
             model.addAttribute("details",
-                    new ClassementCRparetape().selectWhere(connection, false, "etapeid='" + etapeId + "'"));
+                    new ClassementCRparetape().select(connection, false,
+                            "select * from ClassementCRparetape where " + " etapeid='" + etapeId + "' order by rang"));
 
             return "pages/home/classementCRDetail";
         } finally {

@@ -36,6 +36,12 @@
                         <th scope="col">POINTS</th>
                         <th scope="col">ETAPE</th>
                         <th scope="col">Details</th>
+                        
+                        <th scope="col">GENRE</th>
+                        <th scope="col">CHRONO</th>
+                        <th scope="col">PENALITE</th>
+                        <th scope="col">TEMPS FINAL</th>
+
                       </tr>
                     </thead>
                     <tbody>
@@ -53,6 +59,10 @@
                             <td>
                                 <small class="d-block">Arrivee: <%= classement.getArrivee() %></small>
                             </td>
+                            <td><%= classement.getGenre() %></td>
+                            <td><%= classement.getChronoAsSTR() %></td>
+                            <td><%= classement.getTempspenaliteAsSTR() %></td>
+                            <td><%= classement.getArriveeavecpenalite() %></td>
 
                         </tr>
                         <tr class="spacer"><td colspan="100"></td></tr>

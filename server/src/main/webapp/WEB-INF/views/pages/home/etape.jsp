@@ -54,7 +54,7 @@
                             <small class="d-block">Depart:<%= etape.getDepart() %> </small>
                             </td>
                             <td> 
-                              <a href=""> VOIR RESULTAT</a>
+                              <a href="/home/voirresultat?etapeId=<%= etape.getID() %>"> VOIR RESULTAT</a>
                             </td>
 
                         </tr>
