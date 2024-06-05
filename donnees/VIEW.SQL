@@ -5,7 +5,7 @@ SELECT ResultatEtape.ID ,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
     Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe, etape.id as etapeid , equipe.id as equipeid ,
     coureur.id as coureurid , Etape.depart as depart ,
-    
+    coureur.genre    
     FROM ResultatEtape 
     JOIN Coureur ON Coureur.ID = ResultatEtape.Coureur
     JOIN Etape ON Etape.ID = ResultatEtape.Etape 
@@ -17,7 +17,7 @@ drop view penalitesomme cascade ;
 create view penalitesomme as 
 select  etape  , equipe , sum( tempspenalite)   as tempspenalite from penalite GROUP by etape,equipe ;
 
--- drop VIEW COMPLETResultatEtape cascade; 
+drop VIEW COMPLETResultatEtape cascade; 
 -- resultat avec libelle complet avec penalite
 CREATE VIEW COMPLETResultatEtape AS
 select
@@ -29,7 +29,7 @@ penalitesomme.equipe = COMPLETResultatEtapeSansPenalite.equipeid ;
 
 
 
--- DROP view classementCRParEtape0 cascade;
+DROP view classementCRParEtape0 cascade;
 -- classement des coureurs par etape 
 CREATE view classementCRParEtape0 AS
 SELECT  DENSE_RANK() OVER (partition by COMPLETResultatEtape.etapeid ORDER BY COMPLETResultatEtape.chrono ) 
@@ -41,14 +41,14 @@ AS rang,
         where COMPLETResultatEtape.Arrivee is not null
         ORDER BY COMPLETResultatEtape.chrono;
 
--- DROP view classementCRParEtape cascade;
+DROP view classementCRParEtape cascade;
 CREATE view classementCRParEtape AS
-    select classementCRParEtape0.*, coalesce(point.point,0) as point from classementCRParEtape0
+    select classementCRParEtape0.*, coalesce(point.point,0) as point , classementCRParEtape0.arrivee+classementCRParEtape0.chrono  as arriveeavecpenalite  from classementCRParEtape0
         left JOIN POINT ON POINT.RANK =RANG ;
 
 
 --  classement general des coureurs etape non prise en compte
--- drop VIEW classementCR cascade;
+drop VIEW classementCR cascade;
 
 CREATE VIEW classementCR AS
 SELECT DENSE_RANK() OVER (ORDER BY SUM(POINT) desc) AS RANG ,
@@ -102,7 +102,7 @@ CREATE VIEW etatcompteparetape as
 
     select nbCoureur=nb as estcomplet , etape ,equipe from columnadded;
 
--- drop VIEW CLASSEMENTPARETAPEAVECCHRONO cascade;
+drop VIEW CLASSEMENTPARETAPEAVECCHRONO cascade;
 CREATE VIEW CLASSEMENTPARETAPEAVECCHRONO AS
 SELECT classementcrparetape.*  from classementcrparetape  order by etapeid;
 
@@ -116,7 +116,7 @@ select
     then 'JUNIOR'
     END AS categorie
 from coureur ;
--- drop VIEW categorieselonsexe cascade;
+drop VIEW categorieselonsexe cascade;
 CREATE VIEW categorieselonsexe as
 select 
     coureur.id ,  
@@ -131,7 +131,7 @@ Create view categoriecomplet as
 
 -- categoriecomplet;
 
--- drop VIEW COMPLETResultatEtapecategorie cascade;
+drop VIEW COMPLETResultatEtapecategorie cascade;
 CREATE VIEW COMPLETResultatEtapecategorie as
 select COMPLETResultatEtape.* , coureurcategorie.categorie from COMPLETResultatEtape join coureurcategorie
 on coureurcategorie.coureur =COMPLETResultatEtape.coureurid ;
