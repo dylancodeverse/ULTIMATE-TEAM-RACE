@@ -22,6 +22,7 @@ import scaffold.framework.demo.models.course.Classementparequipetous;
 import scaffold.framework.demo.models.course.Etape;
 
 import io.micrometer.common.lang.Nullable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/home")
@@ -97,6 +98,22 @@ public class CTHome {
         model.addAttribute("categorie", categorie);
         model.addAttribute("chart", Classementparequipeavecpointparcategorie.getJSONPieChartInformation(cls));
         return "pages/home/classementParCategorie";
+    }
+
+    @GetMapping("/voirresultat")
+    public String getVoirRes(@RequestParam String etapeId, Model model) throws Exception {
+        Connection connection = dataSource.getConnection();
+        try {
+
+            model.addAttribute("details",
+                    new ClassementCRparetape().selectWhere(connection, false, "etapeid='" + etapeId + "'"));
+
+            return "pages/home/classementCRDetail";
+        } finally {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        }
     }
 
 }

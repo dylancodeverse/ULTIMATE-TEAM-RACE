@@ -2,6 +2,8 @@ package scaffold.framework.demo.models.course;
 
 import java.sql.Timestamp;
 
+import org.postgresql.util.PGInterval;
+
 import orm.DynamicORM;
 
 public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
@@ -12,6 +14,13 @@ public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
     String coureurnom;
     String equipe;
     Integer point;
+    Timestamp arriveeavecpenalite;
+    String etapeid;
+    String equipeid;
+    String coureurid;
+    Timestamp depart;
+    String genre;
+    PGInterval chrono;
 
     public Long getRang() {
         return rang;
@@ -67,5 +76,61 @@ public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
 
     public void setPoint(Integer point) {
         this.point = point;
+    }
+
+    public Timestamp getArriveeavecpenalite() {
+        return arriveeavecpenalite;
+    }
+
+    public void setArriveeavecpenalite(Timestamp arriveeavecpenalite) {
+        this.arriveeavecpenalite = arriveeavecpenalite;
+    }
+
+    public String getEtapeid() {
+        return etapeid;
+    }
+
+    public void setEtapeid(String etapeid) {
+        this.etapeid = etapeid;
+    }
+
+    public String getEquipeid() {
+        return equipeid;
+    }
+
+    public void setEquipeid(String equipeid) {
+        this.equipeid = equipeid;
+    }
+
+    public String getCoureurid() {
+        return coureurid;
+    }
+
+    public void setCoureurid(String coureurid) {
+        this.coureurid = coureurid;
+    }
+
+    public Timestamp getDepart() {
+        return depart;
+    }
+
+    public void setDepart(Timestamp depart) {
+        this.depart = depart;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public PGInterval getChrono() {
+        return chrono;
+    }
+
+    public void setChrono(PGInterval chrono) {
+        this.chrono = chrono;
     }
 }
