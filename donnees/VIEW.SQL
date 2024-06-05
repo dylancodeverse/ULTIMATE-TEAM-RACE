@@ -4,7 +4,8 @@ create view  COMPLETResultatEtapeSansPenalite as
 SELECT ResultatEtape.ID ,
     ResultatEtape.Arrivee , Etape.Nom AS EtapeNOM ,
     Coureur.NOM AS CoureurNOM, Equipe.nom as Equipe, etape.id as etapeid , equipe.id as equipeid ,
-    coureur.id as coureurid , Etape.depart as depart 
+    coureur.id as coureurid , Etape.depart as depart ,
+    
     FROM ResultatEtape 
     JOIN Coureur ON Coureur.ID = ResultatEtape.Coureur
     JOIN Etape ON Etape.ID = ResultatEtape.Etape 
@@ -197,7 +198,3 @@ join getPenaltiesWithName
 on getPenaltiesWithName.equipe=equipe.id;
 
 
-DROP VIEW ETAPENONPARTICIPEPAREQUIPE ;
-CREATE VIEW ETAPENONPARTICIPEPAREQUIPE AS
-SELECT CLASSEMENTPARETAPEAVECCHRONO.equipeid , etape.* FROM etape 
-LEFT JOIN CLASSEMENTPARETAPEAVECCHRONO   on etape.id =CLASSEMENTPARETAPEAVECCHRONO.etapeid ;

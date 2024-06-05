@@ -35,6 +35,8 @@
                         <th scope="col">RANG</th>
                         <th scope="col">NOM</th>
                         <th scope="col">INFO</th>
+                        <th scope="col">RESULTAT</th>
+
                       </tr>
                     </thead>
                     <tbody>
@@ -50,6 +52,9 @@
                             <%= etape.getLongueurKM() %> KM de course
                             <small class="d-block"><%= etape.getNbCoureur() %> coureurs par equipe</small>
                             <small class="d-block">Depart:<%= etape.getDepart() %> </small>
+                            </td>
+                            <td> 
+                              <a href=""> VOIR RESULTAT</a>
                             </td>
 
                         </tr>

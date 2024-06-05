@@ -3,6 +3,7 @@ package scaffold.framework.demo.controllers;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -66,8 +67,7 @@ public class CTEquipe {
 
     @GetMapping("/check")
     @Auth(classSource = RulesConf.class, rule = "isEquipe")
-    public ResponseEntity<?> getMethodName(HttpServletRequest request, @RequestParam String etapeId)
-            throws SQLException {
+    public ResponseEntity<?> getMethodName(HttpServletRequest request, @RequestParam String etapeId) throws SQLException {
         Connection connection = dataSource.getConnection();
         HashMap<String, String> hashMap = new HashMap<>();
         HttpSession session = request.getSession();
@@ -87,14 +87,16 @@ public class CTEquipe {
                 connection.close();
             }
         }
-
+    
         if (hashMap.isEmpty()) {
-            return ResponseEntity.ok("Paiement effectué avec succès !");
+            System.out.println("empty");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Paiement effectué avec succès !");
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.badRequest().body(hashMap);
         }
     }
-
     @GetMapping("/affectation")
     @Auth(classSource = RulesConf.class, rule = "isEquipe")
     public String pageAffectation(Model model, HttpServletRequest request, @Nullable @RequestParam String etapeid)

@@ -2,62 +2,31 @@ package scaffold.framework.demo.models.equipe;
 
 import java.sql.Connection;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+
+import scaffold.framework.demo.models.course.Etape;
 
 public class HomeEquipe {
 
     String etapenom;
     String etapeId;
     Timestamp departEtape;
-    ArrayList<String> coureurs;
-    ArrayList<String> chrono;
-
-    public HomeEquipe() {
-        coureurs = new ArrayList<>();
-        chrono = new ArrayList<>();
-    }
+    CLASSEMENTPARETAPEAVECCHRONO[] participants;
 
     public static HomeEquipe[] getAllByEquipeID(Connection connection, String equipeID) throws Exception {
-        CLASSEMENTPARETAPEAVECCHRONO[] cls = new CLASSEMENTPARETAPEAVECCHRONO().selectWhere(connection, false,
-                "equipeid='" + equipeID + "'");
-        if (cls.length == 0) {
-            return new HomeEquipe[0];
+        Etape[] etapes = new Etape().select(connection, true);
+        HomeEquipe[] homeEquipes = new HomeEquipe[etapes.length];
+        for (int i = 0; i < homeEquipes.length; i++) {
+            homeEquipes[i] = new HomeEquipe();
+            homeEquipes[i].setEtapenom(etapes[i].getNom());
+            homeEquipes[i].setEtapeId(etapes[i].getID());
+
+            homeEquipes[i].setDepartEtape(etapes[i].getDepart());
+
+            homeEquipes[i].setParticipants(new CLASSEMENTPARETAPEAVECCHRONO().selectWhere(connection, true,
+                    "equipeid='" + equipeID + "' and etapeid='" + etapes[i].getID() + "'"));
         }
-        ArrayList<HomeEquipe> homeEquipes = new ArrayList<HomeEquipe>();
+        return homeEquipes;
 
-        String etapetemp = "";
-        HomeEquipe homeEquipe = null;
-        for (CLASSEMENTPARETAPEAVECCHRONO classementparetapeavecchrono : cls) {
-            if (!etapetemp.equals(classementparetapeavecchrono.getEtapenom())) {
-                homeEquipe = new HomeEquipe();
-                etapetemp = classementparetapeavecchrono.getEtapenom();
-                homeEquipe.setEtapenom(etapetemp);
-                homeEquipe.setEtapeId(classementparetapeavecchrono.getEtapeid());
-                homeEquipe.setDepartEtape(classementparetapeavecchrono.getDepart());
-                homeEquipes.add(homeEquipe);
-            }
-            homeEquipe.setChrono(classementparetapeavecchrono.getChrono().toString().split("days")[1]);
-            homeEquipe.setCoureurs(classementparetapeavecchrono.getCoureurnom());
-        }
-        ETAPENONPARTICIPEPAREQUIPE[] nop = new ETAPENONPARTICIPEPAREQUIPE().select();
-        for (ETAPENONPARTICIPEPAREQUIPE each : nop) {
-            homeEquipe = new HomeEquipe();
-            homeEquipe.setEtapenom(each.getNom());
-            homeEquipe.setEtapeId(each.getId());
-            homeEquipe.setDepartEtape(each.getDepart());
-
-            homeEquipes.add(homeEquipe);
-        }
-
-        return homeEquipes.toArray(new HomeEquipe[homeEquipes.size()]);
-    }
-
-    private void setCoureurs(String coureurnom) {
-        coureurs.add(coureurnom);
-    }
-
-    private void setChrono(String string) {
-        chrono.add(string);
     }
 
     public String getEtapenom() {
@@ -66,22 +35,6 @@ public class HomeEquipe {
 
     public void setEtapenom(String etapenom) {
         this.etapenom = etapenom;
-    }
-
-    public ArrayList<String> getCoureurs() {
-        return coureurs;
-    }
-
-    public void setCoureurs(ArrayList<String> coureurs) {
-        this.coureurs = coureurs;
-    }
-
-    public ArrayList<String> getChrono() {
-        return chrono;
-    }
-
-    public void setChrono(ArrayList<String> chrono) {
-        this.chrono = chrono;
     }
 
     public String getEtapeId() {
@@ -100,4 +53,11 @@ public class HomeEquipe {
         this.departEtape = departEtape;
     }
 
+    public CLASSEMENTPARETAPEAVECCHRONO[] getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(CLASSEMENTPARETAPEAVECCHRONO[] participants) {
+        this.participants = participants;
+    }
 }

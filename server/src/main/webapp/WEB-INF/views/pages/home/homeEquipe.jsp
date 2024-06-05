@@ -27,10 +27,12 @@
                 <h2><%= home.getEtapeId() + " " + home.getEtapenom() + " avec depart: " + home.getDepartEtape() %> :</h2>
                 <div class="resource-cards">
                     <div class="card">
-                        <% for(int i = 0; i < home.getCoureurs().size(); i++) { %>
-                        <h3><p><%= home.getCoureurs().get(i) %></p></h3>
-                        <h3>avec chrono :<p><%= home.getChrono().get(i) %></p></h3>
-                        <% } %>
+                        <%
+                            for (CLASSEMENTPARETAPEAVECCHRONO each : home.getParticipants()) { %>
+                        <h3><p><%= each.getCoureurnom() %></p></h3>
+                        <h3>avec chrono :<p><%= each.getChrono() %></p></h3>                                
+                            <%}%>
+
                         <button onclick='checkEtat("<%= home.getEtapeId() %>")'>Ajouter</button>
                         <span id="<%= home.getEtapeId() %>Error" style="color: red;"></span>
                     </div>
@@ -52,17 +54,25 @@
             dataType: "json", // Attendre une réponse JSON du backend
             success: function(response) {
                 console.log("/equipe/affectation?etapeid=" + params);
+                console.log('Réponse réussie:', response);
                 window.location.href = "/equipe/affectation?etapeid=" + params;
             },
             error: function(xhr, status, error) {
+                console.log('Erreur détectée:', error);
+                console.log('Détails:', xhr.responseText);
                 // Gérer les erreurs de validation provenant du backend
-                var errors = xhr.responseJSON;
-                $.each(errors, function(key, value) {
-                    $('#' + key + 'Error').text(value); // Afficher les erreurs à côté des champs correspondants
-                });
+                if (xhr.responseJSON) {
+                    var errors = xhr.responseJSON;
+                    $.each(errors, function(key, value) {
+                        $('#' + key + 'Error').text(value); // Afficher les erreurs à côté des champs correspondants
+                    });
+                } else {
+                    console.log('Réponse non JSON reçue:', xhr.responseText);
+                }
             }
         });
     }
     </script>
-</body>
-</html>
+    </body>
+    </html>
+    

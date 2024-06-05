@@ -7,7 +7,7 @@ import org.postgresql.util.PGInterval;
 import orm.DynamicORM;
 
 public class CLASSEMENTPARETAPEAVECCHRONO extends DynamicORM<CLASSEMENTPARETAPEAVECCHRONO> {
-    Integer rang;
+    Long rang;
     String id;
     Timestamp arrivee;
     String etapenom;
@@ -19,11 +19,11 @@ public class CLASSEMENTPARETAPEAVECCHRONO extends DynamicORM<CLASSEMENTPARETAPEA
     PGInterval chrono;
     String equipeid;
 
-    public Integer getRang() {
+    public Long getRang() {
         return rang;
     }
 
-    public void setRang(Integer rang) {
+    public void setRang(Long rang) {
         this.rang = rang;
     }
 

@@ -24,7 +24,6 @@ public class Etape extends DynamicORM<Etape> {
     Integer nbCoureur;
     Integer rangEtape;
     Timestamp depart;
-
     //
     @Ignore
     @CsvBindByName(column = "etape")
