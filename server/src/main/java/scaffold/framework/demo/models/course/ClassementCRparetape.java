@@ -24,7 +24,6 @@ public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
     PGInterval tempspenalite;
 
     public String getTempspenaliteAsSTR() {
-        System.out.println("fory");
         try {
             return getTempspenalite().toString().split("mons")[1];
 
@@ -40,7 +39,6 @@ public class ClassementCRparetape extends DynamicORM<ClassementCRparetape> {
     }
 
     public String getChronoAsSTR() {
-        System.out.println("fory");
         try {
             return chrono.toString().split("mons")[1];
 
